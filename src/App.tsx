@@ -65,9 +65,11 @@ const App: Component = () => {
   };
 
   createEffect(() => {
+    const s = settings();
+    const secs = s.poster?.intervalSecs ?? 15; // default show poster every 15 seconds
     const interval = setInterval(() => {
       setShowPoster((m) => !m);
-    }, 5 * 1000);
+    }, secs * 1000);
 
     onCleanup(() => clearInterval(interval));
   });

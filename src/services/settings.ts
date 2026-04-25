@@ -18,6 +18,7 @@ function loadSettings(): AppSettings {
     poster: {
       landscapeEnabled: true,
       imageUrlLandscape: null,
+      intervalSecs: 15,
     },
     misc: {
       displayModeSecs: 5,

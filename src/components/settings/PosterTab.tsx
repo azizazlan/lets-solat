@@ -1,5 +1,13 @@
 import type { PosterSettings } from "@/types/settings";
 
+const DEFAULT_VALUES: PosterSettings = {
+  poster: {
+    landscapeEnabled: true,
+    imageUrlLandscape: null,
+    intervalSecs: 15,
+  },
+};
+
 export default function PosterTab(props: {
   value: PosterSettings;
   onChange: (v: PosterSettings) => void;
@@ -10,6 +18,48 @@ export default function PosterTab(props: {
       ...patch,
     });
   };
+
+  const safeValues = () => props.value ?? DEFAULT_VALUES;
+
+  const updateInterval = (key: keyof PosterSettings, value: number) => {
+    const clamped = Math.max(5, Math.min(60, value));
+
+    props.onChange({
+      ...safeValues(),
+      [key]: clamped,
+    });
+  };
+
+  const row = (label: string, key: keyof MiscSettings) => (
+    <div class="flex items-center text-black">
+      <label class="text-black mr-5">{label}</label>
+
+      <div class="flex items-center">
+        <button
+          onClick={() => update(key, safeValues()[key] - 1)}
+          class="w-15 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
+        >
+          Minus
+        </button>
+
+        <input
+          type="number"
+          min="10"
+          max="60"
+          value={safeValues()[key]}
+          onInput={(e) => updateInterval(key, Number(e.currentTarget.value))}
+          class="w-12 h-8 text-center text-sm border border-gray-300 text-black"
+        />
+
+        <button
+          onClick={() => update(key, safeValues()[key] + 1)}
+          class="w-15 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
+        >
+          Plus
+        </button>
+      </div>
+    </div>
+  );
 
   const handleLandscapeFile = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
@@ -23,14 +73,7 @@ export default function PosterTab(props: {
   };
 
   const toggleRow = (label: string, key: keyof PosterSettings) => (
-    <div
-      style={{
-        display: "flex",
-        "justify-content": "space-between",
-        "align-items": "center",
-        "background-color": "white",
-      }}
-    >
+    <div>
       <span style={{ "font-size": "1vh", color: "black" }}>{label}</span>
 
       {/* Kiosk-friendly toggle */}
@@ -41,8 +84,6 @@ export default function PosterTab(props: {
         style={{
           width: "2.7vh",
           height: "1.7vh",
-          "margin-right": "0.7vh",
-          "margin-left": "0.7vh",
           "font-size": "0.7vh",
           border: "none",
           cursor: "pointer",
@@ -57,12 +98,15 @@ export default function PosterTab(props: {
 
   return (
     <div class="bg-white text-black">
-      <div class="mt-[1vh]">
-        <div class="flex flex-row items-center justify-start">
-          <div class="text-[1vh] mr-[1vh]">Poster</div>
+      <div class="flex flex-col mt-[1vh]">
+        {row("Display interval secs", "intervalSecs")}
 
-          {toggleRow("", "landscapeEnabled")}
+        <div class="mt-7 flex flex-col justify-start">
+          <div>Poster</div>
+          <div>{toggleRow("", "landscapeEnabled")}</div>
+        </div>
 
+        <div class="mt-7 flex flex-row items-center justify-start">
           <input
             type="file"
             accept="image/*"

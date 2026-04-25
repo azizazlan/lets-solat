@@ -33,7 +33,7 @@ const Hadiths = () => {
         {hadith()?.text || "Loading hadith..."}
       </div>
 
-      <div class="text-green-800 text-5xl mt-9">
+      <div class="text-green-800 text-7xl mt-9">
         {hadith()?.source ? `— ${hadith()?.source}` : ""}
       </div>
     </div>
