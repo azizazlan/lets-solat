@@ -5,12 +5,10 @@ import AppEventsTab from "./AppEventsTab";
 import PosterTab from "./PosterTab";
 import MiscTab from "./MiscTab";
 import PrayerTimesTab from "./PrayerTimesTab";
-
 import type { AppSettings, TabKey } from "@/types/settings";
 import type { AppEvent } from "@/types/app-event";
 
 type Props = {
-  open: boolean;
   initialValues?: AppSettings;
   onClose: () => void;
   onSave: (values: AppSettings) => void;
@@ -46,7 +44,7 @@ export default function SettingsModal(props: Props) {
   );
 
   createEffect(() => {
-    if (props.open && props.initialValues) {
+    if (props.initialValues) {
       setIqamah(props.initialValues.iqamah);
       setPoster(props.initialValues.poster ?? null);
       setMisc(props.initialValues.misc ?? null);
@@ -103,7 +101,7 @@ export default function SettingsModal(props: Props) {
 
           <button
             onClick={handleSave}
-            class="px-6 py-3 text-base font-bold bg-black text-white hover:bg-gray-800 transition"
+            class="px-6 py-3 text-base font-bold bg-green-900 text-white hover:bg-gray-800 transition"
           >
             Save
           </button>

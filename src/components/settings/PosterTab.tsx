@@ -1,4 +1,3 @@
-import { Image } from "lucide-solid";
 import type { PosterSettings } from "@/types/settings";
 
 export default function PosterTab(props: {
@@ -75,17 +74,12 @@ export default function PosterTab(props: {
 
           {toggleRow("", "portraitEnabled")}
 
-          <div class="flex flex-row gap-1">
-            <div>
-              <Image />
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handlePortraitFile}
-              class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
-            />
-          </div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handlePortraitFile}
+            class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
+          />
 
           {props.value.imagePortrait && (
             <img
@@ -102,17 +96,12 @@ export default function PosterTab(props: {
 
           {toggleRow("", "landscapeEnabled")}
 
-          <div class="flex flex-row gap-1">
-            <div>
-              <Image />
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleLandscapeFile}
-              class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
-            />
-          </div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleLandscapeFile}
+            class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
+          />
 
           {props.value.imageLandscape && (
             <img

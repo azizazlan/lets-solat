@@ -164,7 +164,7 @@ export default function AppEventsTab(props: {
 
         <button
           onClick={saveAppEvent}
-          class="cursor-pointer bg-black text-3xl text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
+          class="cursor-pointer bg-green-900 text-3xl text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
         >
           {editingId() ? "Update" : "Add"}
         </button>

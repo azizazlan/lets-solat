@@ -1,4 +1,3 @@
-import { Plus, Minus } from "lucide-solid";
 import type { MiscSettings } from "@/types/settings";
 
 const DEFAULT_VALUES: MiscSettings = {
@@ -27,9 +26,9 @@ export default function MiscTab(props: {
       <div class="flex items-center">
         <button
           onClick={() => update(key, safeValues()[key] - 1)}
-          class="w-8 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
+          class="w-15 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
         >
-          <Minus />
+          Minus
         </button>
 
         <input
@@ -38,14 +37,14 @@ export default function MiscTab(props: {
           max="60"
           value={safeValues()[key]}
           onInput={(e) => update(key, Number(e.currentTarget.value))}
-          class="w-[5vh] h-[2vh] text-center mx-[1vh] text-black border border-black"
+          class="w-12 h-8 text-center text-sm border border-gray-300 text-black"
         />
 
         <button
           onClick={() => update(key, safeValues()[key] + 1)}
-          class="w-8 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
+          class="w-15 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
         >
-          <Plus />
+          Plus
         </button>
       </div>
     </div>
