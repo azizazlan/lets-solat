@@ -11,24 +11,13 @@ export default function PosterTab(props: {
     });
   };
 
-  const handlePortraitFile = (e: Event) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      update({ imagePortrait: reader.result as string });
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleLandscapeFile = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = () => {
-      update({ imageLandscape: reader.result as string });
+      update({ imageUrlLandscape: reader.result as string });
     };
     reader.readAsDataURL(file);
   };
@@ -68,31 +57,9 @@ export default function PosterTab(props: {
 
   return (
     <div class="bg-white text-black">
-      <div class="mt-[0vh]">
-        <div class="flex flex-row items-center justify-start">
-          <div class="text-[1vh] mr-[2.3vh]">Portrait</div>
-
-          {toggleRow("", "portraitEnabled")}
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handlePortraitFile}
-            class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
-          />
-
-          {props.value.imagePortrait && (
-            <img
-              src={props.value.imagePortrait}
-              class="w-auto h-[12vh] border border-black"
-            />
-          )}
-        </div>
-      </div>
-
       <div class="mt-[1vh]">
         <div class="flex flex-row items-center justify-start">
-          <div class="text-[1vh] mr-[1vh]">Landscape</div>
+          <div class="text-[1vh] mr-[1vh]">Poster</div>
 
           {toggleRow("", "landscapeEnabled")}
 
@@ -103,9 +70,9 @@ export default function PosterTab(props: {
             class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
           />
 
-          {props.value.imageLandscape && (
+          {props.value.imageUrlLandscape && (
             <img
-              src={props.value.imageLandscape}
+              src={props.value.imageUrlLandscape}
               class="w-auto h-[12vh] border border-black"
             />
           )}

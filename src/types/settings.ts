@@ -11,10 +11,8 @@ export type IqamahSettings = {
 };
 
 export type PosterSettings = {
-  portraitEnabled: boolean;
   landscapeEnabled: boolean;
-  imagePortrait: string | null;
-  imageLandscape: string | null;
+  imageUrlLandscape: string | null;
 };
 
 export type MiscSettings = {
