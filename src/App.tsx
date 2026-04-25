@@ -1,12 +1,21 @@
-import { createMemo, createSignal, onMount, Switch, Match } from "solid-js";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  onMount,
+  onCleanup,
+  Switch,
+  Match,
+} from "solid-js";
 import type { Component } from "solid-js";
 import { useTimer } from "@/services/timer";
-import { useSettings } from "@/services/settings";
+import { useSettings, saveSettings } from "@/services/settings";
 import { loadTodayPrayers } from "@/services/prayers";
 import { timeToDate } from "@/utils/time";
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import BlackoutPanel from "@/components/BlackoutPanel";
+import PosterPanel from "@/components/PosterPanel";
 import SettingsModal from "@/components/settings/SettingsModal";
 
 const App: Component = () => {
@@ -41,6 +50,28 @@ const App: Component = () => {
     timer.startTimer();
   });
 
+  const [showPoster, setShowPoster] = createSignal<boolean>(false);
+
+  const imgLandscapePath = () => {
+    const s = settings();
+    return s.poster?.imageUrlLandscape ?? "";
+  };
+
+  const imgLandscape = createMemo(() => imgLandscapePath());
+
+  const isLandscapeEnabled = () => {
+    const s = settings();
+    return s.poster?.landscapeEnabled ?? false;
+  };
+
+  createEffect(() => {
+    const interval = setInterval(() => {
+      setShowPoster((m) => !m);
+    }, 5 * 1000);
+
+    onCleanup(() => clearInterval(interval));
+  });
+
   return (
     <div class="flex flex-row w-full h-full">
       <div class="absolute top-2 right-3 flex items-center gap-2 z-50">
@@ -62,6 +93,9 @@ const App: Component = () => {
       <Switch>
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
+        </Match>
+        <Match when={showPoster() && timer.phase() !== "BLACKOUT"}>
+          <PosterPanel imageUrl={imgLandscape()} />
         </Match>
         <Match when={timer.phase() !== "BLACKOUT"}>
           <LeftPanel

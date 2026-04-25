@@ -16,10 +16,8 @@ function loadSettings(): AppSettings {
       alisha: 10,
     },
     poster: {
-      portraitEnabled: true,
       landscapeEnabled: true,
-      imagePortrait: null,
-      imageLandscape: null,
+      imageUrlLandscape: null,
     },
     misc: {
       displayModeSecs: 5,
