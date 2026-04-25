@@ -13,6 +13,7 @@ export type IqamahSettings = {
 export type PosterSettings = {
   landscapeEnabled: boolean;
   imageUrlLandscape: string | null;
+  intervalSecs: number;
 };
 
 export type MiscSettings = {
