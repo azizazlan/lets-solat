@@ -79,9 +79,9 @@ const App: Component = () => {
       <div class="absolute top-2 right-3 flex items-center gap-2 z-50">
         <button
           onClick={() => setOpenSettings(true)}
-          class="text-white cursor-pointer border border-2 font-semibold rounded px-3 py-3 opacity-70 hover:opacity-100"
+          class="text-white cursor-pointer border border-2 font-semibold rounded-md px-3 py-3 opacity-50 hover:opacity-100"
         >
-          Settings
+          Settings ...
         </button>
       </div>
       <Show when={openSettings()}>
@@ -103,7 +103,7 @@ const App: Component = () => {
         >
           <PosterPanel imageUrl={imgLandscape()} />
         </Match>
-        <Match when={timer.phase() !== "BLACKOUT"}>
+        <Match when={!showPoster() && timer.phase() !== "BLACKOUT"}>
           <LeftPanel
             phase={timer.phase()}
             now={timer.now}

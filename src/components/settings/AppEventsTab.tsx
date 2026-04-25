@@ -111,7 +111,7 @@ export default function AppEventsTab(props: {
   };
 
   return (
-    <div class="flex gap-6 w-full h-full text-black text-4xl">
+    <div class="flex gap-6 w-full h-full text-black text-2xl">
       {/* LEFT: FORM */}
       <div class="flex-1 flex flex-col gap-3 overflow-auto pr-2">
         <div class="flex items-center gap-2">
@@ -155,19 +155,14 @@ export default function AppEventsTab(props: {
           class="px-2 py-1 border"
         />
 
-        {/* <textarea */}
-        {/*   placeholder="Description" */}
-        {/*   value={form().desc} */}
-        {/*   onInput={(e) => update("desc", e.currentTarget.value)} */}
-        {/*   class="border p-2" */}
-        {/* /> */}
-
-        <button
-          onClick={saveAppEvent}
-          class="cursor-pointer bg-green-900 text-3xl text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
-        >
-          {editingId() ? "Update" : "Add"}
-        </button>
+        <div class="flex flex-row justify-end w-full ">
+          <button
+            onClick={saveAppEvent}
+            class="cursor-pointer bg-green-900 text-xl text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
+          >
+            {editingId() ? "Update" : "Add"}
+          </button>
+        </div>
       </div>
 
       {/* RIGHT: LIST */}
@@ -180,55 +175,66 @@ export default function AppEventsTab(props: {
           return (
             <div
               onClick={() => editAppEvent(e)}
-              class={`flex flex-row mt-2 p-3 rounded-md cursor-pointer gap-5
-            ${
-              editingId() === e.id
-                ? "bg-blue-50 border-2 border-blue-500"
-                : "bg-gray-50 border"
-            }`}
+              class={`flex items-center mt-2 p-3 rounded-md cursor-pointer gap-5
+        ${
+          editingId() === e.id
+            ? "bg-blue-50 border-2 border-blue-500"
+            : "bg-gray-50 border border-gray-300"
+        }`}
             >
-              <div class="text-3xl font-semibold">
-                <span class="min-w-[50px] inline-flex items-center text-3xl font-medium bg-gray-200 text-gray-600">
+              {/* LEFT: index + date */}
+              <div class="flex items-center gap-3">
+                <div class="p-3 min-w-[55px] flex justify-center items-center text-2xl font-semibold bg-yellow-800 text-white">
                   {index + 1}
-                </span>{" "}
-                {getDayLabel(e.date)} • {formatDateMY(e.date)} {e.time}
+                </div>
+
+                <div class="text-3xl ">
+                  {getDayLabel(e.date)} • {formatDateMY(e.date)} {e.time}
+                </div>
               </div>
 
-              <div class="min-w-[650px] text-3xl font-bold text-green-900">
+              {/* TITLE */}
+              <div class="min-w-[650px] text-3xl text-green-900 ">
                 {e.title}
               </div>
-              <img
-                class="w-[2vw] object-cover"
-                src={`/data/speaker-imgs/${e.speakerCode}.png`}
-                alt={e.speaker}
-              />
-              {(e.speaker || e.speakerCode) && (
-                <div class="text-3xl font-semibold flex flex-column text-gray-600 flex-1">
-                  <div>{e.speaker}</div>
-                </div>
-              )}
 
-              {editingId() === e.id ? (
-                <button
-                  onClick={(ev) => {
-                    ev.stopPropagation();
-                    cancelEdit();
-                  }}
-                  class="border px-2"
-                >
-                  Cancel
-                </button>
-              ) : (
-                <button
-                  onClick={(ev) => {
-                    ev.stopPropagation();
-                    deleteAppEvent(e.id);
-                  }}
-                  class="border text-red-600"
-                >
-                  Del
-                </button>
-              )}
+              {/* MIDDLE (grows and pushes button right) */}
+              <div class="flex items-center gap-3 flex-1">
+                <img
+                  class="w-[2vw] object-cover"
+                  src={`/data/speaker-imgs/${e.speakerCode}.png`}
+                  alt={e.speaker}
+                />
+
+                {(e.speaker || e.speakerCode) && (
+                  <div class="text-3xl text-black">{e.speaker}</div>
+                )}
+              </div>
+
+              {/* RIGHT ACTION BUTTON */}
+              <div class="flex items-center">
+                {editingId() === e.id ? (
+                  <button
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      cancelEdit();
+                    }}
+                    class="border text-lg px-3 py-1 rounded"
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      deleteAppEvent(e.id);
+                    }}
+                    class="cursor-pointer text-red-500 px-2 text-xl font-bold"
+                  >
+                    ❌
+                  </button>
+                )}
+              </div>
             </div>
           );
         })}

@@ -99,9 +99,7 @@ export default function PosterTab(props: {
   return (
     <div class="bg-white text-black">
       <div class="flex flex-col mt-[1vh]">
-        {row("Display interval secs", "intervalSecs")}
-
-        <div class="mt-7 flex flex-col justify-start">
+        <div class="flex flex-col justify-start">
           <div>Poster</div>
           <div>{toggleRow("", "landscapeEnabled")}</div>
         </div>
