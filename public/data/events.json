@@ -1,0 +1,273 @@
+[
+  {
+    "date": "01-Apr-2026",
+    "day": "Rabu",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Liswan Hadi",
+    "speakerCode": "liswan"
+  },
+  {
+    "date": "02-Apr-2026",
+    "day": "Khamis",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Asyari",
+    "speakerCode": "asyari"
+  },
+  {
+    "date": "03-Apr-2026",
+    "day": "Jumaat",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Haji Azmi Sabdin",
+    "speakerCode": "azmi"
+  },
+  {
+    "date": "04-Apr-2026",
+    "day": "Sabtu",
+    "time": "",
+    "title": "",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "05-Apr-2026",
+    "day": "Ahad",
+    "time": "",
+    "title": "",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "06-Apr-2026",
+    "day": "Isnin",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Nadzmi",
+    "speakerCode": "nadzmi"
+  },
+  {
+    "date": "07-Apr-2026",
+    "day": "Selasa",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Haji Azmi Sabdin",
+    "speakerCode": "azmi"
+  },
+  {
+    "date": "08-Apr-2026",
+    "day": "Rabu",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Nazrin",
+    "speakerCode": "nazrin"
+  },
+  {
+    "date": "09-Apr-2026",
+    "day": "Khamis",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Wan Muhammad Abd Halim",
+    "speakerCode": "wan"
+  },
+  {
+    "date": "10-Apr-2026",
+    "day": "Jumaat",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Hazwan",
+    "speakerCode": "hazwan"
+  },
+  {
+    "date": "11-Apr-2026",
+    "day": "Sabtu",
+    "time": "",
+    "title": "TIADA ACARA",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "12-Apr-2026",
+    "day": "Ahad",
+    "time": "",
+    "title": "TIADA ACARA",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "13-Apr-2026",
+    "day": "Isnin",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Syakir",
+    "speakerCode": "syakir"
+  },
+  {
+    "date": "14-Apr-2026",
+    "day": "Selasa",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Asraf",
+    "speakerCode": "asyraf"
+  },
+  {
+    "date": "15-Apr-2026",
+    "day": "Rabu",
+    "time": "07:45 PM",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Nazrin",
+    "speakerCode": "nazrin"
+  },
+  {
+    "date": "16-Apr-2026",
+    "day": "Khamis",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Wan Muhammad Abd Halim",
+    "speakerCode": "wan"
+  },
+  {
+    "date": "17-Apr-2026",
+    "day": "Jumaat",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Haji Azmi Sabdin",
+    "speakerCode": "azmi"
+  },
+  {
+    "date": "18-Apr-2026",
+    "day": "Sabtu",
+    "time": "",
+    "title": "Jemputan Blok \"A\" Terbuka (\"Lepas Isya\")",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": "ketupat"
+  },
+  {
+    "date": "19-Apr-2026",
+    "day": "Ahad",
+    "time": "",
+    "title": "TIADA ACARA",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "20-Apr-2026",
+    "day": "Isnin",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Syakir",
+    "speakerCode": "syakir"
+  },
+  {
+    "date": "21-Apr-2026",
+    "day": "Selasa",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Haji Azmi Sabdin",
+    "speakerCode": "azmi"
+  },
+  {
+    "date": "22-Apr-2026",
+    "day": "Rabu",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Nazrin",
+    "speakerCode": "nazrin"
+  },
+  {
+    "date": "23-Apr-2026",
+    "day": "Khamis",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Wan Muhammad Abd Halim",
+    "speakerCode": "wan"
+  },
+  {
+    "date": "24-Apr-2026",
+    "day": "Jumaat",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Haji Azmi Sabdin",
+    "speakerCode": "azmi"
+  },
+  {
+    "date": "25-Apr-2026",
+    "day": "Sabtu",
+    "time": "",
+    "title": "Jamuan Zulakedah \"Blok D\" Terbuka (\"Lepas Isya\")",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "26-Apr-2026",
+    "day": "Ahad",
+    "time": "",
+    "title": "TIADA ACARA",
+    "desc": "",
+    "speaker": "",
+    "speakerCode": ""
+  },
+  {
+    "date": "27-Apr-2026",
+    "day": "Isnin",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Nadzmi",
+    "speakerCode": "nadzmi"
+  },
+  {
+    "date": "28-Apr-2026",
+    "day": "Selasa",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg Ustaz Haji Azmi Sabdin",
+    "speakerCode": "azmi"
+  },
+  {
+    "date": "29-Apr-2026",
+    "day": "Rabu",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Nazrin",
+    "speakerCode": "nazrin"
+  },
+  {
+    "date": "30-Apr-2026",
+    "day": "Khamis",
+    "time": "",
+    "title": "Kuliah Maghrib",
+    "desc": "",
+    "speaker": "YBhg. Ustaz Wan Muhammad Abd Halim",
+    "speakerCode": "wan"
+  }
+]
+
