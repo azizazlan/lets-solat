@@ -96,7 +96,11 @@ const App: Component = () => {
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
         </Match>
-        <Match when={showPoster() && timer.phase() !== "BLACKOUT"}>
+        <Match
+          when={
+            showPoster() && isLandscapeEnabled() && timer.phase() !== "BLACKOUT"
+          }
+        >
           <PosterPanel imageUrl={imgLandscape()} />
         </Match>
         <Match when={timer.phase() !== "BLACKOUT"}>

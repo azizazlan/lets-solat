@@ -3,7 +3,7 @@ import type { PosterSettings } from "@/types/settings";
 const DEFAULT_VALUES: PosterSettings = {
   poster: {
     landscapeEnabled: true,
-    imageUrlLandscape: null,
+    imageUrlLandscape: "/poster/default.jpg",
     intervalSecs: 15,
   },
 };
@@ -106,7 +106,7 @@ export default function PosterTab(props: {
           <div>{toggleRow("", "landscapeEnabled")}</div>
         </div>
 
-        <div class="mt-7 flex flex-row items-center justify-start">
+        <div class="flex flex-col items-start gap-2 mt-7">
           <input
             type="file"
             accept="image/*"
@@ -117,7 +117,9 @@ export default function PosterTab(props: {
           {props.value.imageUrlLandscape && (
             <img
               src={props.value.imageUrlLandscape}
-              class="w-auto h-[12vh] border border-black"
+              class={`w-auto h-[12vh] border border-black ${
+                props.value.landscapeEnabled ? "" : "grayscale opacity-50"
+              }`}
             />
           )}
         </div>

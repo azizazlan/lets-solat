@@ -17,7 +17,7 @@ function loadSettings(): AppSettings {
     },
     poster: {
       landscapeEnabled: true,
-      imageUrlLandscape: null,
+      imageUrlLandscape: "poster/default.jpg",
       intervalSecs: 15,
     },
     misc: {

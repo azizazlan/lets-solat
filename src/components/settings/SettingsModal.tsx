@@ -62,7 +62,7 @@ export default function SettingsModal(props: Props) {
     props.onClose();
   };
 
-  console.log(poster());
+  // console.log(poster());
 
   return (
     <div class="fixed inset-0 bg-black/60 z-50">
