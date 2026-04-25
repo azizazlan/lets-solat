@@ -28,6 +28,11 @@ export default function LeftPanel(props: LeftPanelProps) {
     onCleanup(() => clearInterval(interval));
   });
 
+  const thereAreAppEvents = () => {
+    const s = settings();
+    return s.appEvents?.length > 0;
+  };
+
   return (
     <div class="w-full h-full flex flex-col">
       <Switch>
@@ -41,11 +46,11 @@ export default function LeftPanel(props: LeftPanelProps) {
               <Hadiths />
             </Match>
 
-            <Match when={mode() === 1}>
+            <Match when={mode() === 1 && thereAreAppEvents()}>
               <EventsPanel />
             </Match>
 
-            <Match when={mode() === 2}>
+            <Match when={mode() === 2 || !thereAreAppEvents()}>
               <PrayerList
                 filteredPrayers={props.filteredPrayers}
                 nextPrayer={props.nextPrayer}

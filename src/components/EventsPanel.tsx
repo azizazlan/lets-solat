@@ -1,83 +1,97 @@
 import {
-  createResource,
   createSignal,
+  createResource,
   onMount,
   onCleanup,
   Show,
-  Switch,
-  Match,
 } from "solid-js";
 import { loadTodayAndTomorrow } from "@/services/app-events";
 
 export default function EventsPanel() {
-  const [data] = createResource(loadTodayAndTomorrow);
+  const [data, { loading }] = createResource(loadTodayAndTomorrow);
 
   const [mode, setMode] = createSignal<"today" | "tomorrow">("today");
 
+  // rotate every 10s
   onMount(() => {
     const interval = setInterval(() => {
       setMode((prev) => (prev === "today" ? "tomorrow" : "today"));
-    }, 10000); // 10 seconds
+    }, 7000);
 
     onCleanup(() => clearInterval(interval));
   });
 
-  if (!data()) {
-    return (
-      <div class="text-black text-7xl text-center p-4">
-        Tiada acara/pengumuman
-      </div>
-    );
-  }
+  const hasEvents = () => {
+    const d = data();
+    return d && (d.today.length > 0 || d.tomorrow.length > 0);
+  };
+
+  const currentEvent = () => {
+    const d = data();
+    if (!d) return undefined;
+
+    const today = d.today[0];
+    const tomorrow = d.tomorrow[0];
+
+    if (mode() === "today" && today) return today;
+    if (mode() === "tomorrow" && tomorrow) return tomorrow;
+
+    // fallback if one side empty
+    return today ?? tomorrow;
+  };
 
   return (
-    <div class="h-full w-full bg-white">
-      <Switch
+    <div class="h-full w-full bg-white flex items-center justify-center">
+      {/* Loading */}
+      <Show
+        when={!loading}
         fallback={
-          <div class="text-black text-7xl text-center p-4">
-            Tiada acara/pengumuman
-          </div>
+          <div class="text-black text-5xl text-center p-4">Loading...</div>
         }
       >
-        <Match when={data().today[0] && data().tomorrow[0]}>
-          {(d) => {
-            const current = () =>
-              mode() === "today" ? d().today[0] : d().tomorrow[0];
+        {/* No events */}
+        <Show
+          when={hasEvents()}
+          fallback={
+            <div class="text-black text-5xl text-center p-4">
+              Tiada acara/pengumuman
+            </div>
+          }
+        >
+          {/* Content */}
+          <div class="text-center">
+            {/* Title */}
+            <div class="text-8xl font-black text-green-700 mb-7">
+              {mode() === "today"
+                ? "Hari Ini,... إن شاء الله"
+                : "Esok ... إن شاء الله"}
+            </div>
 
-            return (
-              <div class="text-center p-4">
-                {/* Title (Hari Ini / Esok) */}
-                <div class="text-xl font-black text-black">
-                  {mode() === "today" ? "Hari Ini" : "Esok"}
-                </div>
+            {/* Event title */}
+            <div class="text-9xl font-bold text-green-800">
+              {currentEvent()?.title}
+            </div>
 
-                {/* Event title */}
-                <div class="text-xl font-black text-green-800">
-                  {current()?.title}
-                </div>
-
-                {/* Speaker image (centered) */}
-                {current().speakerCode && (
-                  <div class="flex justify-center my-4">
-                    <img
-                      class="w-[16vw] rounded-[1vw] object-cover"
-                      src={`/data/speaker-imgs/${current().speakerCode}.png`}
-                      alt={current().speaker}
-                    />
-                  </div>
-                )}
-
-                {/* Speaker name */}
-                <Show when={current().speaker}>
-                  <div class="text-xl font-black text-green-800 text-center">
-                    {current().speaker}
-                  </div>
-                </Show>
+            {/* Speaker image */}
+            <Show when={currentEvent()?.speakerCode}>
+              <div class="flex justify-center my-4">
+                <img
+                  class="w-[16vw] rounded-lg object-cover"
+                  src={`/data/speaker-imgs/${currentEvent()!.speakerCode}.png`}
+                  alt={currentEvent()?.speaker}
+                />
               </div>
-            );
-          }}
-        </Match>
-      </Switch>
+            </Show>
+
+            {/* Speaker name */}
+            <Show when={currentEvent()?.speaker}>
+              <div class="text-8xl font-semibold text-green-900">
+                {currentEvent()?.speaker}
+              </div>
+            </Show>
+          </div>
+        </Show>
+      </Show>
     </div>
   );
 }

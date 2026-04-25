@@ -20,7 +20,7 @@ export default function Tabs(props: {
         return (
           <button
             onClick={() => props.onChange(t.key)}
-            class={`pb-2 text-sm font-semibold transition
+            class={`cursor-pointer pb-2 text-sm font-semibold transition
            ${
              active
                ? "border-b-2 border-green-700 text-green-700"
