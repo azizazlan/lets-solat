@@ -65,6 +65,7 @@ const App: Component = () => {
   };
 
   createEffect(() => {
+    if (!isLandscapeEnabled()) return;
     const s = settings();
     const secs = s.poster?.intervalSecs ?? 15; // default show poster every 15 seconds
     const interval = setInterval(() => {
@@ -103,7 +104,7 @@ const App: Component = () => {
         >
           <PosterPanel imageUrl={imgLandscape()} />
         </Match>
-        <Match when={!showPoster() && timer.phase() !== "BLACKOUT"}>
+        <Match when={!showPoster() || timer.phase() !== "BLACKOUT"}>
           <LeftPanel
             phase={timer.phase()}
             now={timer.now}
