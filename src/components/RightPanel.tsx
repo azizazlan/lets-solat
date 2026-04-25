@@ -1,12 +1,9 @@
 import type { Prayer } from "@/types/prayers";
+import type { Phase } from "@/services/timer";
 import BlackoutPanel from "./BlackoutPanel";
 import PostIqamahPanel from "./PostIqamahPanel";
 import IqamahPanel from "./IqamahPanel";
 import AzanPanel from "./AzanPanel";
-
-const FORCE_BLACKOUT = false; // ← set true to test
-
-export type Phase = "BLACKOUT" | "IQAMAH" | "POST_IQAMAH" | "AZAN";
 
 export default function RightPanel(props: {
   phase: Phase;
@@ -18,8 +15,6 @@ export default function RightPanel(props: {
 }) {
   return (
     <div class="w-full h-full bg-[url('/logo2.png')] bg-repeat">
-      {(FORCE_BLACKOUT || props.phase === "BLACKOUT") && <BlackoutPanel />}
-
       {props.phase === "POST_IQAMAH" && <PostIqamahPanel />}
 
       {props.phase === "IQAMAH" && (

@@ -1,34 +1,20 @@
 export default function PostIqamahPanel() {
   return (
-    <div
-      style={{
-        direction: "rtl",
-        "font-size": "6.5vh",
-        "margin-top": "2vh",
-        "text-align": "center",
-        "line-height": "1.4em",
-        "padding-left": "3vw",
-        "padding-right": "3vw",
-      }}
-    >
-      <div style={{ "font-size": "7.5vh", "margin-bottom": "1vh" }}>
-        سَوُّوا صُفُوفَكُمْ، فَإِنَّ تَسْوِيَةَ الصُّفُوفِ مِنْ إِقَامَةِ الصَّلاَةِ
+    <div class="h-full flex flex-col justify-center items-center text-center leading-relaxed">
+      {/* Main Arabic text */}
+      <div class="text-9xl text-white leading-relaxed">
+        سَوُّوا صُفُوفَكُمْ، فَإِنَّ تَسْوِيَةَ الصُّفُوفِ مِنْ إِقَامَةِ
+        الصَّلاَةِ
       </div>
 
-      <div
-        style={{
-          "font-size": "3.5vh",
-          opacity: "0.7",
-          "line-height": "1.3em",
-        }}
-      >
+      {/* Translation */}
+      <div class="mt-9 text-7xl text-white leading-snug">
         Luruskanlah saf-saf kamu kerana meluruskan saf itu termasuk di dalam
         mendirikan solat
       </div>
 
-      <div style={{ "font-size": "2vh", opacity: "0.7" }}>
-        Riwayat al-Bukhari (723)
-      </div>
+      {/* Source */}
+      <div class="mt-9 text-5xl text-yellow-300">Riwayat al-Bukhari (723)</div>
     </div>
   );
 }

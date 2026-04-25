@@ -10,7 +10,7 @@ function loadSettings(): AppSettings {
   const DEFAULT: AppSettings = {
     iqamah: {
       alfajr: 18,
-      dhuhr: 10,
+      dhuhr: 1,
       alasr: 10,
       maghrib: 10,
       alisha: 10,
@@ -22,7 +22,7 @@ function loadSettings(): AppSettings {
       imageLandscape: null,
     },
     misc: {
-      displayModeSecs: 30,
+      displayModeSecs: 5,
     },
     appEvents: [],
   };

@@ -25,7 +25,7 @@ const MONTH_NAMES = [
 ];
 
 function HexBadge(props: { value: string | number; size?: number }) {
-  const size = props.size ?? 195;
+  const size = 255;
   const hexPoints = "50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25";
 
   return (
@@ -124,7 +124,7 @@ export default function Clock(props: { now: Accessor<Date> }) {
         </div>
 
         <div class="text-[4vh] font-bold">
-          {hijriMonth()}, {hijriYear()}
+          {hijriMonth()},{hijriYear()}
         </div>
       </div>
     </div>

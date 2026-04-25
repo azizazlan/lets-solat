@@ -1,26 +1,8 @@
 export default function BlackoutPanel() {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        background: "rgb(2, 2, 2)", // not pure black
-        position: "relative",
-      }}
-    >
+    <div class="w-full h-full bg-[rgb(2,2,2)] relative">
       {/* anti-sleep blinking dot */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "5vh",
-          right: "5vh",
-          width: "0.5vh",
-          height: "0.5vh",
-          "border-radius": "50%",
-          background: "orange",
-          animation: "blink 2s infinite",
-        }}
-      />
+      <div class="absolute bottom-[5vh] right-[5vh] w-[0.5vh] h-[0.5vh] rounded-full bg-orange-500 animate-pulse"></div>
     </div>
   );
 }

@@ -20,7 +20,7 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
 
   return (
     <div
-      class="w-full text-black grid grid-cols-[1fr_auto_1fr] px-3 py-3 mt-15"
+      class="w-full text-black grid grid-cols-[1fr_auto_1fr] px-3 py-3 mb-15"
       classList={{
         "font-black": props.active,
         "font-medium": !props.active,

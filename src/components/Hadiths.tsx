@@ -29,11 +29,11 @@ const Hadiths = () => {
 
   return (
     <div class="text-center bg-white h-full flex flex-col p-3">
-      <div class="mt-9 text-black text-3xl">
+      <div class="mt-9 text-black text-7xl leading-relaxed">
         {hadith()?.text || "Loading hadith..."}
       </div>
 
-      <div class="text-green-800 text-xl">
+      <div class="text-green-800 text-5xl mt-9">
         {hadith()?.source ? `— ${hadith()?.source}` : ""}
       </div>
     </div>

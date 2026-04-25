@@ -22,10 +22,23 @@ export default function EventsPanel() {
     onCleanup(() => clearInterval(interval));
   });
 
+  if (!data()) {
+    return (
+      <div class="text-black text-7xl text-center p-4">
+        Tiada acara/pengumuman
+      </div>
+    );
+  }
+
   return (
-    <div class="h-full bg-white">
-      <Switch>
-        <Match when={!data()}>Data not available</Match>
+    <div class="h-full w-full bg-white">
+      <Switch
+        fallback={
+          <div class="text-black text-7xl text-center p-4">
+            Tiada acara/pengumuman
+          </div>
+        }
+      >
         <Match when={data().today[0] && data().tomorrow[0]}>
           {(d) => {
             const current = () =>

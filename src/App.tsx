@@ -1,10 +1,11 @@
-import { createMemo, createSignal, onMount } from "solid-js";
+import { createMemo, createSignal, onMount, Switch, Match } from "solid-js";
 import type { Component } from "solid-js";
 import { useTimer } from "@/services/timer";
 import { loadTodayPrayers } from "@/services/prayers";
 import { timeToDate } from "@/utils/time";
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
+import BlackoutPanel from "@/components/BlackoutPanel";
 
 const App: Component = () => {
   const timer = useTimer();
@@ -38,24 +39,29 @@ const App: Component = () => {
 
   return (
     <div class="flex flex-row w-full h-full">
-      <LeftPanel
-        phase="AZAN"
-        now={timer.now}
-        filteredPrayers={timer.filteredPrayers}
-        nextPrayer={nextPrayer}
-        lastPrayer={lastPrayer}
-        duhaDate={duhaDate}
-        syurukDate={syurukDate}
-        displayMode={displayMode()}
-      />
-      <RightPanel
-        phase="AZAN"
-        countdown={timer.countdown()}
-        prayer={nextPrayer()}
-        lastPrayer={lastPrayer}
-        nextPrayer={nextPrayer}
-        filteredPrayers={timer.filteredPrayers}
-      />
+      <Switch>
+        <Match when={timer.phase() === "BLACKOUT"}>
+          <BlackoutPanel />
+        </Match>
+        <Match when={timer.phase() !== "BLACKOUT"}>
+          <LeftPanel
+            phase={timer.phase()}
+            now={timer.now}
+            filteredPrayers={timer.filteredPrayers}
+            nextPrayer={nextPrayer}
+            duhaDate={duhaDate}
+            syurukDate={syurukDate}
+          />
+          <RightPanel
+            phase={timer.phase()}
+            countdown={timer.countdown()}
+            prayer={nextPrayer()}
+            lastPrayer={lastPrayer}
+            nextPrayer={nextPrayer}
+            filteredPrayers={timer.filteredPrayers}
+          />
+        </Match>
+      </Switch>
     </div>
   );
 };
