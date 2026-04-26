@@ -28,14 +28,13 @@ export default function SettingsModal(props: Props) {
   );
   const [poster, setPoster] = createSignal(
     props.initialValues?.poster ?? {
-      landscapeEnabled: false,
-      imageLandscape: "",
-      intervalSecs: 15,
+      isEnabled: false,
+      imageUrl: "/poster/default.jpg",
     },
   );
   const [misc, setMisc] = createSignal(
     props.initialValues?.misc ?? {
-      displayModeSecs: 30,
+      leftPanelIntervalSecs: 15,
     },
   );
   const [appEvents, setAppEvents] = createSignal<AppEvent[]>(

@@ -2,9 +2,8 @@ import type { PosterSettings } from "@/types/settings";
 
 const DEFAULT_VALUES: PosterSettings = {
   poster: {
-    landscapeEnabled: true,
-    imageUrlLandscape: "/poster/default.jpg",
-    intervalSecs: 15,
+    isEnabled: true,
+    imageUrl: "/poster/default.jpg",
   },
 };
 
@@ -19,55 +18,13 @@ export default function PosterTab(props: {
     });
   };
 
-  const safeValues = () => props.value ?? DEFAULT_VALUES;
-
-  const updateInterval = (key: keyof PosterSettings, value: number) => {
-    const clamped = Math.max(5, Math.min(60, value));
-
-    props.onChange({
-      ...safeValues(),
-      [key]: clamped,
-    });
-  };
-
-  const row = (label: string, key: keyof MiscSettings) => (
-    <div class="flex items-center text-black">
-      <label class="text-black mr-5">{label}</label>
-
-      <div class="flex items-center">
-        <button
-          onClick={() => update(key, safeValues()[key] - 1)}
-          class="w-15 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
-        >
-          Minus
-        </button>
-
-        <input
-          type="number"
-          min="10"
-          max="60"
-          value={safeValues()[key]}
-          onInput={(e) => updateInterval(key, Number(e.currentTarget.value))}
-          class="w-12 h-8 text-center text-sm border border-gray-300 text-black"
-        />
-
-        <button
-          onClick={() => update(key, safeValues()[key] + 1)}
-          class="w-15 h-8 flex flex-col items-center justify-center border-2 border-black text-black"
-        >
-          Plus
-        </button>
-      </div>
-    </div>
-  );
-
-  const handleLandscapeFile = (e: Event) => {
+  const handleFile = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = () => {
-      update({ imageUrlLandscape: reader.result as string });
+      update({ imageUrl: reader.result as string });
     };
     reader.readAsDataURL(file);
   };
@@ -101,22 +58,22 @@ export default function PosterTab(props: {
       <div class="flex flex-col mt-[1vh]">
         <div class="flex flex-col justify-start">
           <div>Poster</div>
-          <div>{toggleRow("", "landscapeEnabled")}</div>
+          <div>{toggleRow("", "isEnabled")}</div>
         </div>
 
         <div class="flex flex-col items-start gap-2 mt-7">
           <input
             type="file"
             accept="image/*"
-            onChange={handleLandscapeFile}
+            onChange={handleFile}
             class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
           />
 
-          {props.value.imageUrlLandscape && (
+          {props.value.imageUrl && (
             <img
-              src={props.value.imageUrlLandscape}
+              src={props.value.imageUrl}
               class={`w-auto h-[12vh] border border-black ${
-                props.value.landscapeEnabled ? "" : "grayscale opacity-50"
+                props.value.isEnabled ? "" : "grayscale opacity-50"
               }`}
             />
           )}

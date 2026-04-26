@@ -1,8 +1,22 @@
 import { createSignal } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import { formatHMS, timeToDate } from "@/utils/time";
-export type Phase = "AZAN" | "IQAMAH" | "POST_IQAMAH" | "BLACKOUT";
+export type Phase =
+  | "WAITING_AZAN"
+  | "BETWEEN_WAITING_AZAN"
+  | "IQAMAH"
+  | "POST_IQAMAH"
+  | "BLACKOUT";
 import { getIqamahDuration } from "@/services/settings";
+
+// 10 seconds oscillates between WAITING_AZAN and BETWEEN_WAITING_AZAN
+export const BETWEEN_DURATION = envNumber(
+  import.meta.env.VITE_BETWEEN_AZAN_INTERVAL,
+  10000, // default fallback (ms)
+);
+let betweenEnd: number | null = null;
+let waitingEnd: number | null = null; // 👈 NEW
+
 /* =======================
    TOLERANCES (CRITICAL)
 ======================= */
@@ -35,7 +49,7 @@ export function useTimer(imageCount = 14) {
   ======================= */
   const [now, setNow] = createSignal(new Date());
   const [prayers, setPrayers] = createSignal<Prayer[]>([]);
-  const [phase, setPhase] = createSignal<Phase>("AZAN");
+  const [phase, setPhase] = createSignal<Phase>("WAITING_AZAN");
   const [countdown, setCountdown] = createSignal("00:00:00");
   const [imageIndex, setImageIndex] = createSignal(0);
   const [effectiveIqamahDuration, setEffectiveIqamahDuration] = createSignal(
@@ -122,23 +136,70 @@ export function useTimer(imageCount = 14) {
       /* =======================
          AZAN
       ======================= */
-      case "AZAN": {
+      case "WAITING_AZAN": {
         const nextPrayerTime = getNextPrayerTime(current);
         if (!nextPrayerTime) return;
 
         const diff = nextPrayerTime.getTime() - nowMs;
 
-        // AZAN countdown
-        if (diff > AZAN_TOLERANCE_MS) {
-          setCountdown(formatHMS(diff));
+        // 🔥 Azan reached
+        if (diff <= AZAN_TOLERANCE_MS) {
+          iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
+          iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
+          setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
+          setPhase("IQAMAH");
           return;
         }
 
-        // 🔥 Transition to IQAMAH
-        iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
-        iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
-        setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
-        setPhase("IQAMAH");
+        // ⏱ Initialize WAITING phase timer
+        if (!waitingEnd) {
+          waitingEnd = nowMs + BETWEEN_DURATION;
+        }
+
+        const remaining = waitingEnd - nowMs;
+
+        if (remaining <= PHASE_TOLERANCE_MS) {
+          waitingEnd = null;
+          betweenEnd = nowMs + BETWEEN_DURATION;
+          setPhase("BETWEEN_WAITING_AZAN");
+          return;
+        }
+
+        // ✅ Show REAL azan countdown here
+        setCountdown(formatHMS(diff));
+        return;
+      }
+
+      case "BETWEEN_WAITING_AZAN": {
+        const nextPrayerTime = getNextPrayerTime(current);
+        if (!nextPrayerTime) return;
+
+        const diff = nextPrayerTime.getTime() - nowMs;
+
+        // 🔥 Azan reached
+        if (diff <= AZAN_TOLERANCE_MS) {
+          iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
+          iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
+          setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
+          setPhase("IQAMAH");
+          return;
+        }
+
+        if (!betweenEnd) {
+          betweenEnd = nowMs + BETWEEN_DURATION;
+        }
+
+        const remaining = betweenEnd - nowMs;
+
+        if (remaining <= PHASE_TOLERANCE_MS) {
+          betweenEnd = null;
+          waitingEnd = nowMs + BETWEEN_DURATION;
+          setPhase("WAITING_AZAN");
+          return;
+        }
+
+        // ✅ Show 10s loop countdown
+        setCountdown(formatHMS(diff));
         return;
       }
 
@@ -205,7 +266,7 @@ export function useTimer(imageCount = 14) {
         if (remaining <= PHASE_TOLERANCE_MS) {
           blackoutEnd = null;
           setCountdown("00:00:00");
-          setPhase("AZAN");
+          setPhase("WAITING_AZAN");
           return;
         }
 
@@ -236,10 +297,11 @@ export function useTimer(imageCount = 14) {
     postIqamahEnd = null;
     blackoutEnd = null;
     iqamahImageEnd = null;
+    betweenEnd = null; // ✅
+    waitingEnd = null; // ✅
     setImageIndex(0);
     setCountdown("00:00:00");
-    setPhase("AZAN");
-    setEffectiveIqamahDuration(getIqamahDuration("alasr"));
+    setPhase("WAITING_AZAN");
   };
 
   return {

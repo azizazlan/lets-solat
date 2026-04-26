@@ -3,7 +3,7 @@ import type { Phase } from "@/services/timer";
 import BlackoutPanel from "./BlackoutPanel";
 import PostIqamahPanel from "./PostIqamahPanel";
 import IqamahPanel from "./IqamahPanel";
-import AzanPanel from "./AzanPanel";
+import WaitingAzanPanel from "./WaitingAzanPanel";
 
 export default function RightPanel(props: {
   phase: Phase;
@@ -25,8 +25,8 @@ export default function RightPanel(props: {
         />
       )}
 
-      {props.phase === "AZAN" && (
-        <AzanPanel
+      {props.phase === "WAITING_AZAN" && (
+        <WaitingAzanPanel
           prayer={props.prayer}
           countdown={props.countdown}
           filteredPrayers={props.filteredPrayers}

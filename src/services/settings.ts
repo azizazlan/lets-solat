@@ -16,12 +16,11 @@ function loadSettings(): AppSettings {
       alisha: 10,
     },
     poster: {
-      landscapeEnabled: true,
-      imageUrlLandscape: "poster/default.jpg",
-      intervalSecs: 15,
+      isEnabled: true,
+      imageUrl: "poster/default.jpg",
     },
     misc: {
-      displayModeSecs: 5,
+      leftPanelIntervalSecs: 5,
     },
     appEvents: [],
   };

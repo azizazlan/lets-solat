@@ -1,6 +1,7 @@
 import PrayerHorizList from "./PrayerHorizList";
 
-export default function AzanPanel(props: {
+// Panel user see while waiting for Azan
+export default function WaitingAzanPanel(props: {
   prayer?: Prayer;
   countdown: string;
   filteredPrayers?: () => Prayer[];

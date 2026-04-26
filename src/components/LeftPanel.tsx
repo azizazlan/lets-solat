@@ -23,7 +23,7 @@ export default function LeftPanel(props: LeftPanelProps) {
   createEffect(() => {
     const interval = setInterval(() => {
       setMode((m) => (m + 1) % 3);
-    }, settings().misc.displayModeSecs * 1000);
+    }, settings().misc.leftPanelIntervalSecs * 1000);
 
     onCleanup(() => clearInterval(interval));
   });
