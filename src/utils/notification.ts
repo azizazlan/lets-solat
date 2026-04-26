@@ -28,13 +28,13 @@ export async function unlockAudio(): Promise<boolean> {
 let isPlaying = false;
 
 export async function playAlarm() {
-  // if (isPlaying) return;
-  //
-  // try {
-  //   isPlaying = true;
-  //   audio.currentTime = 0;
-  //   await audio.play();
-  // } finally {
-  //   isPlaying = false;
-  // }
+  if (isPlaying) return;
+
+  try {
+    isPlaying = true;
+    audio.currentTime = 0;
+    await audio.play();
+  } finally {
+    isPlaying = false;
+  }
 }

@@ -1,22 +1,12 @@
 import { createEffect, createSignal } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import PrayerHorizList from "./PrayerHorizList";
-import { playAlarm } from "@/utils/notification";
 
 export default function IqamahPanel(props: {
   countdown: string;
   filteredPrayers?: () => Prayer[];
   lastPrayer?: () => Prayer | undefined;
 }) {
-  const [alarmPlayed, setAlarmPlayed] = createSignal(false);
-
-  createEffect(() => {
-    if (!alarmPlayed()) {
-      playAlarm();
-      setAlarmPlayed(true);
-    }
-  });
-
   return (
     <div class="h-full text-white flex flex-col w-full h-full justify-start items-center">
       <div class="text-9xl flex-1 flex flex-col items-center justify-center">

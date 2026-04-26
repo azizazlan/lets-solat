@@ -56,10 +56,6 @@ const App: Component = () => {
 
   const imgPoster = createMemo(() => posterImgPath());
 
-  // createEffect(() => {
-  //   console.log(timer.phase());
-  // });
-
   return (
     <div class="flex flex-row w-full h-full">
       <SettingsPanel handleOpenModal={() => setOpenSettings(true)} />
