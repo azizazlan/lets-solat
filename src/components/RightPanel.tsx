@@ -25,7 +25,7 @@ export default function RightPanel(props: {
         />
       )}
 
-      {props.phase === "DISPLAY_PRAYER_TIMES" && (
+      {props.phase === "WAITING_AZAN" && (
         <WaitingAzanPanel
           prayer={props.prayer}
           countdown={props.countdown}
