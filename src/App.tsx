@@ -71,7 +71,7 @@ const App: Component = () => {
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
         </Match>
-        <Match when={timer.phase() === "BETWEEN_WAITING_AZAN"}>
+        <Match when={timer.phase() === "DISPLAY_POSTER"}>
           <PosterPanel imageUrl={imgPoster()} />
         </Match>
         <Match when={timer.phase() !== "BLACKOUT"}>
