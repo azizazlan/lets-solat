@@ -17,6 +17,7 @@ import RightPanel from "@/components/RightPanel";
 import BlackoutPanel from "@/components/BlackoutPanel";
 import PosterPanel from "@/components/PosterPanel";
 import SettingsModal from "@/components/settings/SettingsModal";
+import SettingsPanel from "@/components/SettingsPanel";
 
 const App: Component = () => {
   const [openSettings, setOpenSettings] = createSignal<boolean>(false);
@@ -38,8 +39,6 @@ const App: Component = () => {
     return new Date(timeToDate(syuruk.time).getTime() + 20 * 60 * 1000);
   });
 
-  const [displayMode, setDisplayMode] = createSignal<DisplayMode>("PRAYERS");
-
   onMount(async () => {
     const todayPrayers = await loadTodayPrayers();
     if (!todayPrayers) {
@@ -50,41 +49,16 @@ const App: Component = () => {
     timer.startTimer();
   });
 
-  const [showPoster, setShowPoster] = createSignal<boolean>(false);
-
-  const imgLandscapePath = () => {
+  const posterImgPath = () => {
     const s = settings();
-    return s.poster?.imageUrlLandscape ?? "";
+    return s.poster?.imageUrl ?? "";
   };
 
-  const imgLandscape = createMemo(() => imgLandscapePath());
-
-  const isLandscapeEnabled = () => {
-    const s = settings();
-    return s.poster?.landscapeEnabled ?? false;
-  };
-
-  createEffect(() => {
-    if (!isLandscapeEnabled()) return;
-    const s = settings();
-    const secs = s.poster?.intervalSecs ?? 15; // default show poster every 15 seconds
-    const interval = setInterval(() => {
-      setShowPoster((m) => !m);
-    }, secs * 1000);
-
-    onCleanup(() => clearInterval(interval));
-  });
+  const imgPoster = createMemo(() => posterImgPath());
 
   return (
     <div class="flex flex-row w-full h-full">
-      <div class="absolute top-2 right-3 flex items-center gap-2 z-50">
-        <button
-          onClick={() => setOpenSettings(true)}
-          class="text-white cursor-pointer border border-2 font-semibold rounded-md px-3 py-3 opacity-50 hover:opacity-100"
-        >
-          Settings ...
-        </button>
-      </div>
+      <SettingsPanel handleOpenModal={() => setOpenSettings(true)} />
       <Show when={openSettings()}>
         <SettingsModal
           open={openSettings()}
@@ -97,14 +71,10 @@ const App: Component = () => {
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
         </Match>
-        <Match
-          when={
-            showPoster() && isLandscapeEnabled() && timer.phase() !== "BLACKOUT"
-          }
-        >
-          <PosterPanel imageUrl={imgLandscape()} />
+        <Match when={timer.phase() === "BETWEEN_WAITING_AZAN"}>
+          <PosterPanel imageUrl={imgPoster()} />
         </Match>
-        <Match when={!showPoster() || timer.phase() !== "BLACKOUT"}>
+        <Match when={timer.phase() !== "BLACKOUT"}>
           <LeftPanel
             phase={timer.phase()}
             now={timer.now}

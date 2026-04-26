@@ -1,7 +1,7 @@
 import type { MiscSettings } from "@/types/settings";
 
 const DEFAULT_VALUES: MiscSettings = {
-  displayModeSecs: 30,
+  leftPanelIntervalSecs: 15,
 };
 
 export default function MiscTab(props: {
@@ -52,7 +52,7 @@ export default function MiscTab(props: {
 
   return (
     <div class="bg-white text-black">
-      {row("Display mode secs", "displayModeSecs")}
+      {row("Left panel intervals display in secs", "leftPanelIntervalSecs")}
     </div>
   );
 }

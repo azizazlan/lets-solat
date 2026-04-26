@@ -11,13 +11,12 @@ export type IqamahSettings = {
 };
 
 export type PosterSettings = {
-  landscapeEnabled: boolean;
-  imageUrlLandscape: string | null;
-  intervalSecs: number;
+  isEnabled: boolean;
+  imageUrl: string | null;
 };
 
 export type MiscSettings = {
-  displayModeSecs: number;
+  leftPanelIntervvalSecs: number;
 };
 
 export type AppSettings = {
