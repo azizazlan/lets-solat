@@ -3,10 +3,33 @@ import type { Prayer } from "@/types/prayers";
 import { formatHMS, timeToDate } from "@/utils/time";
 export type Phase =
   | "WAITING_AZAN"
-  | "BETWEEN_WAITING_AZAN"
+  | "DISPLAY_POSTER"
+  | "DISPLAY_HADITHS"
+  | "DISPLAY_APP_EVENTS"
+  | "DISPLAY_PRAYER_TIMES"
   | "IQAMAH"
   | "POST_IQAMAH"
   | "BLACKOUT";
+
+const DISPLAY_PHASES: Phase[] = [
+  "WAITING_AZAN",
+  "DISPLAY_POSTER",
+  "DISPLAY_HADITHS",
+  "DISPLAY_APP_EVENTS",
+  "DISPLAY_PRAYER_TIMES",
+];
+
+const PHASE_DURATIONS: Record<Phase, number> = {
+  WAITING_AZAN: 10000,
+  DISPLAY_POSTER: 15000,
+  DISPLAY_HADITHS: 12000,
+  DISPLAY_APP_EVENTS: 10000,
+  DISPLAY_PRAYER_TIMES: 8000,
+  IQAMAH: 0,
+  POST_IQAMAH: 0,
+  BLACKOUT: 0,
+};
+
 import { getIqamahDuration } from "@/services/settings";
 
 // 10 seconds oscillates between WAITING_AZAN and BETWEEN_WAITING_AZAN
@@ -14,8 +37,13 @@ export const BETWEEN_DURATION = envNumber(
   import.meta.env.VITE_BETWEEN_AZAN_INTERVAL,
   10000, // default fallback (ms)
 );
-let betweenEnd: number | null = null;
-let waitingEnd: number | null = null; // 👈 NEW
+let displayEnd: number | null = null;
+let displayIndex = 0;
+
+const nextDisplayPhase = () => {
+  displayIndex = (displayIndex + 1) % DISPLAY_PHASES.length;
+  return DISPLAY_PHASES[displayIndex];
+};
 
 /* =======================
    TOLERANCES (CRITICAL)
@@ -133,72 +161,46 @@ export function useTimer(imageCount = 14) {
     }
 
     switch (phase()) {
-      /* =======================
-         AZAN
-      ======================= */
-      case "WAITING_AZAN": {
+      case "WAITING_AZAN":
+      case "DISPLAY_POSTER":
+      case "DISPLAY_HADITHS":
+      case "DISPLAY_APP_EVENTS":
+      case "DISPLAY_PRAYER_TIMES": {
         const nextPrayerTime = getNextPrayerTime(current);
         if (!nextPrayerTime) return;
 
         const diff = nextPrayerTime.getTime() - nowMs;
 
-        // 🔥 Azan reached
+        // 🔥 Azan reached (interrupt ANY display phase)
         if (diff <= AZAN_TOLERANCE_MS) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
           setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
           setPhase("IQAMAH");
+
+          displayEnd = null;
+          displayIndex = 0;
+
           return;
         }
 
-        // ⏱ Initialize WAITING phase timer
-        if (!waitingEnd) {
-          waitingEnd = nowMs + BETWEEN_DURATION;
+        // ⏱ Initialize phase timer
+        if (!displayEnd) {
+          displayEnd = nowMs + PHASE_DURATIONS[phase()];
         }
 
-        const remaining = waitingEnd - nowMs;
+        const remaining = displayEnd - nowMs;
 
         if (remaining <= PHASE_TOLERANCE_MS) {
-          waitingEnd = null;
-          betweenEnd = nowMs + BETWEEN_DURATION;
-          setPhase("BETWEEN_WAITING_AZAN");
+          displayEnd = nowMs + PHASE_DURATIONS[phase()];
+
+          const next = nextDisplayPhase();
+          setPhase(next);
+
           return;
         }
 
-        // ✅ Show REAL azan countdown here
-        setCountdown(formatHMS(diff));
-        return;
-      }
-
-      case "BETWEEN_WAITING_AZAN": {
-        const nextPrayerTime = getNextPrayerTime(current);
-        if (!nextPrayerTime) return;
-
-        const diff = nextPrayerTime.getTime() - nowMs;
-
-        // 🔥 Azan reached
-        if (diff <= AZAN_TOLERANCE_MS) {
-          iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
-          iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
-          setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
-          setPhase("IQAMAH");
-          return;
-        }
-
-        if (!betweenEnd) {
-          betweenEnd = nowMs + BETWEEN_DURATION;
-        }
-
-        const remaining = betweenEnd - nowMs;
-
-        if (remaining <= PHASE_TOLERANCE_MS) {
-          betweenEnd = null;
-          waitingEnd = nowMs + BETWEEN_DURATION;
-          setPhase("WAITING_AZAN");
-          return;
-        }
-
-        // ✅ Show 10s loop countdown
+        // ✅ Always show real azan countdown
         setCountdown(formatHMS(diff));
         return;
       }
@@ -297,8 +299,10 @@ export function useTimer(imageCount = 14) {
     postIqamahEnd = null;
     blackoutEnd = null;
     iqamahImageEnd = null;
-    betweenEnd = null; // ✅
-    waitingEnd = null; // ✅
+
+    displayEnd = null;
+    displayIndex = 0;
+
     setImageIndex(0);
     setCountdown("00:00:00");
     setPhase("WAITING_AZAN");
