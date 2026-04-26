@@ -56,9 +56,9 @@ const App: Component = () => {
 
   const imgPoster = createMemo(() => posterImgPath());
 
-  createEffect(() => {
-    console.log(timer.phase());
-  });
+  // createEffect(() => {
+  //   console.log(timer.phase());
+  // });
 
   return (
     <div class="flex flex-row w-full h-full">

@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { Switch, Match } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import type { Phase } from "@/services/timer";
 import BlackoutPanel from "./BlackoutPanel";
@@ -16,31 +16,33 @@ export default function RightPanel(props: {
 }) {
   return (
     <div class="w-full h-full bg-[url('/logo2.png')] bg-repeat">
-      {props.phase === "POST_IQAMAH" && <PostIqamahPanel />}
-
-      {props.phase === "IQAMAH" && (
-        <IqamahPanel
-          countdown={props.countdown}
-          filteredPrayers={props.filteredPrayers}
-          lastPrayer={props.lastPrayer}
-        />
-      )}
-
-      <Show
-        when={
-          props.phase === "WAITING_AZAN" ||
-          props.phase === "DISPLAY_PRAYER_TIMES" ||
-          props.phase === "DISPLAY_APP_EVENTS" ||
-          props.phase === "DISPLAY_HADITHS"
-        }
-      >
-        <WaitingAzanPanel
-          prayer={props.prayer}
-          countdown={props.countdown}
-          filteredPrayers={props.filteredPrayers}
-          nextPrayer={props.nextPrayer}
-        />
-      </Show>
+      <Switch>
+        <Match when={props.phase === "POST_IQAMAH"}>
+          <PostIqamahPanel />
+        </Match>
+        <Match when={props.phase === "IQAMAH"}>
+          <IqamahPanel
+            countdown={props.countdown}
+            filteredPrayers={props.filteredPrayers}
+            lastPrayer={props.lastPrayer}
+          />
+        </Match>
+        <Match
+          when={
+            props.phase === "WAITING_AZAN" ||
+            props.phase === "DISPLAY_PRAYER_TIMES" ||
+            props.phase === "DISPLAY_APP_EVENTS" ||
+            props.phase === "DISPLAY_HADITHS"
+          }
+        >
+          <WaitingAzanPanel
+            prayer={props.prayer}
+            countdown={props.countdown}
+            filteredPrayers={props.filteredPrayers}
+            nextPrayer={props.nextPrayer}
+          />
+        </Match>
+      </Switch>
     </div>
   );
 }
