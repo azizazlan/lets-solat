@@ -1,3 +1,4 @@
+import { Show } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import type { Phase } from "@/services/timer";
 import BlackoutPanel from "./BlackoutPanel";
@@ -25,14 +26,21 @@ export default function RightPanel(props: {
         />
       )}
 
-      {props.phase === "WAITING_AZAN" && (
+      <Show
+        when={
+          props.phase === "WAITING_AZAN" ||
+          props.phase === "DISPLAY_PRAYER_TIMES" ||
+          props.phase === "DISPLAY_APP_EVENTS" ||
+          props.phase === "DISPLAY_HADITHS"
+        }
+      >
         <WaitingAzanPanel
           prayer={props.prayer}
           countdown={props.countdown}
           filteredPrayers={props.filteredPrayers}
           nextPrayer={props.nextPrayer}
         />
-      )}
+      </Show>
     </div>
   );
 }
