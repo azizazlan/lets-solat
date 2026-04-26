@@ -36,13 +36,11 @@ export default function LeftPanel(props: LeftPanelProps) {
             <Match when={props.phase === "DISPLAY_HADITHS"}>
               <Hadiths />
             </Match>
-
             <Match
               when={props.phase === "DISPLAY_APP_EVENTS" && thereAreAppEvents()}
             >
               <EventsPanel />
             </Match>
-
             <Match
               when={
                 props.phase === "DISPLAY_PRAYER_TIMES" ||
