@@ -56,6 +56,10 @@ const App: Component = () => {
 
   const imgPoster = createMemo(() => posterImgPath());
 
+  createEffect(() => {
+    console.log(timer.phase());
+  });
+
   return (
     <div class="flex flex-row w-full h-full">
       <SettingsPanel handleOpenModal={() => setOpenSettings(true)} />
@@ -74,7 +78,11 @@ const App: Component = () => {
         <Match when={timer.phase() === "DISPLAY_POSTER"}>
           <PosterPanel imageUrl={imgPoster()} />
         </Match>
-        <Match when={timer.phase() !== "BLACKOUT"}>
+        <Match
+          when={
+            timer.phase() === "WAITING_AZAN" || timer.phase() !== "BLACKOUT"
+          }
+        >
           <LeftPanel
             phase={timer.phase()}
             now={timer.now}

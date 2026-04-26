@@ -45,7 +45,9 @@ export default function LeftPanel(props: LeftPanelProps) {
 
             <Match
               when={
-                props.phase === "DISPLAY_PRAYER_TIMES" || !thereAreAppEvents()
+                props.phase === "DISPLAY_PRAYER_TIMES" ||
+                props.phase === "WAITING_AZAN" ||
+                !thereAreAppEvents()
               }
             >
               <PrayerList
