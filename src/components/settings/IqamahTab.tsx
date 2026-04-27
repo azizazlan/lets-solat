@@ -1,7 +1,7 @@
 import type { IqamahSettings } from "@/types/settings";
 
 const DEFAULT_VALUES: IqamahSettings = {
-  alfajr: 18,
+  alfajr: 17,
   dhuhr: 10,
   alasr: 10,
   maghrib: 10,
