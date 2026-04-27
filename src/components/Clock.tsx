@@ -98,34 +98,39 @@ export default function Clock(props: { now: Accessor<Date> }) {
 
   return (
     <div class="flex flex-col bg-white">
-      {/* Top row: badges + clock */}
-      <div class="grid grid-cols-[1fr_auto_1fr] items-center px-3">
-        {/* Left badge */}
-        <div class="flex justify-start translate-x-25">
-          <HexBadge size={195} value={gregorianDay()} />
+      <div>
+        {/* Top row: badges + clock */}
+        <div class="grid grid-cols-[1fr_auto_1fr] items-center px-3">
+          {/* Left badge */}
+          <div class="flex justify-start translate-x-25">
+            <HexBadge size={195} value={gregorianDay()} />
+          </div>
+
+          {/* Digital clock */}
+          <div class="text-9xl font-bold text-center text-green-900">
+            {today().toLocaleTimeString([], { hour12: false })}
+          </div>
+
+          {/* Right badge */}
+          <div class="flex justify-end mr-25">
+            <HexBadge size={195} value={hijriDay()} />
+          </div>
         </div>
 
-        {/* Digital clock */}
-        <div class="text-9xl font-bold text-center text-green-900">
-          {today().toLocaleTimeString([], { hour12: false })}
-        </div>
+        {/* Bottom row: dates */}
+        <div class="text-green-900 flex justify-between px-6">
+          <div class="text-[4vh] font-bold">
+            {DAY_NAMES[today().getDay()]}, {MONTH_NAMES[today().getMonth()]}{" "}
+            {today().getFullYear()}
+          </div>
 
-        {/* Right badge */}
-        <div class="flex justify-end mr-25">
-          <HexBadge size={195} value={hijriDay()} />
+          <div class="text-[4vh] font-bold">
+            {hijriMonth()},{hijriYear()}
+          </div>
         </div>
       </div>
-
-      {/* Bottom row: dates */}
-      <div class="text-green-900 flex justify-between px-6">
-        <div class="text-[4vh] font-bold">
-          {DAY_NAMES[today().getDay()]}, {MONTH_NAMES[today().getMonth()]}{" "}
-          {today().getFullYear()}
-        </div>
-
-        <div class="text-[4vh] font-bold">
-          {hijriMonth()},{hijriYear()}
-        </div>
+      <div class="w-full flex flex-col items-center">
+        <img src="/border.png" class="w-128" />
       </div>
     </div>
   );

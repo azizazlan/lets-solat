@@ -40,10 +40,7 @@ export default function PrayerHorizList(props: Props) {
   const isActive = (p: Prayer) => activePrayer()?.en === p.en;
 
   return (
-    <div
-      class="flex flex-row justify-between w-full p-5"
-      style={{ background: "#155400" }}
-    >
+    <div class="flex flex-row justify-between w-full pt-12 p-5">
       {/* Prayer list */}
       <For each={props.filteredPrayers?.() || []}>
         {(p) => {
