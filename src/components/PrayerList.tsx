@@ -1,8 +1,7 @@
-import { For, Show } from "solid-js";
+import { For, Show, createMemo } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import { padZero } from "@/utils/time";
 import PrayerRow from "./PrayerRow";
-import DuhaRow from "./DuhaRow";
 
 interface PrayerListProps {
   filteredPrayers: () => Prayer[];
@@ -13,61 +12,50 @@ interface PrayerListProps {
 }
 
 export default function PrayerList(props: PrayerListProps) {
+  // Memoize values so they’re only computed once per reactive update
+  const nextPrayer = createMemo(() => props.nextPrayer());
+  const duha = createMemo(() => props.duhaDate());
+  const syuruk = createMemo(() => props.syurukDate());
+
+  // Helper to format time safely
+  const formatTime = (date?: Date) =>
+    date ? `${padZero(date.getHours())}:${padZero(date.getMinutes())}` : "N/A";
+
   return (
-    <div class="flex flex-col w-full h-full pl-10 pr-10">
-      <div class="flex-1 flex flex-col items-center">
+    <div class="flex flex-col w-full h-full p-9">
+      {/* Prayer list */}
+      <div class="flex flex-col items-center">
         <For each={props.filteredPrayers()}>
           {(p) => (
-            <PrayerRow
-              prayer={p}
-              active={p.time === props.nextPrayer()?.time}
-            />
+            <PrayerRow prayer={p} active={p.time === nextPrayer()?.time} />
           )}
         </For>
+
         <div class="w-full flex flex-col items-center">
           <img src="/border.png" class="w-128" />
         </div>
       </div>
-      <Show when={props.duhaDate() && props.syurukDate()}>
-        <div class="flex flex-row bg-white px-7 justify-between">
-          {/* Left column: Duha */}
-          <div class="flex flex-col items-center justify-start leading-relaxed">
-            <div
-              class="text-7xl text-green-900 text-left font-semibold"
-              dir="rtl"
-            >
-              يبدأ الضحى الساعة
-            </div>
 
-            <div class="text-7xl text-green-900 mt-5 font-semibold">
-              DUHA BERMULA
-            </div>
-
-            <div class="text-9xl font-semibold text-green-900">
-              {padZero(props.duhaDate().getHours())}:
-              {padZero(props.duhaDate().getMinutes())}
-            </div>
-          </div>
-
-          {/* Right column: Syuruk */}
-          <div class="flex flex-col items-center justify-end leading-relaxed">
-            <div class="font-black text-7xl text-green-900" dir="rtl">
-              الشروق
-            </div>
-            <div class="font-semibold text-7xl text-green-900 text-right mt-5">
-              MATAHARI TERBIT
-            </div>
-
-            <div class="text-9xl font-semibold text-right text-orange-800">
-              {props.syurukDate()
-                ? `${padZero(props.syurukDate().getHours())}:${padZero(
-                    props.syurukDate().getMinutes(),
-                  )}`
-                : "N/A"}
-            </div>
+      {/* Bottom section */}
+      <div class="flex flex-row justify-between">
+        {/* Duha */}
+        <div class="text-7xl flex flex-col items-center">
+          <div class="text-green-900 font-semibold">يبدأ الضحى الساعة</div>
+          <div class="text-green-900 font-semibold">Duha</div>
+          <div class="text-9xl font-semibold text-green-900">
+            {formatTime(duha())}
           </div>
         </div>
-      </Show>
+
+        {/* Syuruk */}
+        <div class="text-7xl flex flex-col items-center">
+          <div class="font-black text-green-900">الشروق</div>
+          <div class="text-7xl font-semibold text-green-900">Sunrise</div>
+          <div class="text-9xl font-semibold text-orange-800">
+            {formatTime(syuruk())}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
