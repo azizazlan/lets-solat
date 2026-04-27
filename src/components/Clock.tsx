@@ -97,7 +97,7 @@ export default function Clock(props: { now: Accessor<Date> }) {
   };
 
   return (
-    <div class="flex flex-col bg-white">
+    <div class="flex flex-col bg-white pt-9">
       <div>
         {/* Top row: badges + clock */}
         <div class="grid grid-cols-[1fr_auto_1fr] items-center px-3">
