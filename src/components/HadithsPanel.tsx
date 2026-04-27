@@ -60,7 +60,7 @@ const HadithsPanel = (props: HadithsPanelProps) => {
       <div class="font-semibold text-yellow-700 text-7xl mt-9">
         {hadith()?.source ? `— ${hadith()?.source}` : ""}
       </div>
-      <div class="w-full flex flex-col items-center">
+      <div class="w-full flex flex-col items-center mt-12">
         <img src="/border.png" class="w-128" />
       </div>
     </div>

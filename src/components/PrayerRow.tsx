@@ -5,22 +5,34 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
   const d = timeToDate(props.prayer.time);
 
   return (
-    <div class="w-full grid grid-cols-[1fr_auto_1fr] px-3 mb-15">
+    <div class="w-full grid grid-cols-3 items-center text-9xl mb-12">
+      {/* Left (English) */}
       <div
-        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold animate-pulse" : "text-9xl text-yellow-900"}`}
+        class={`text-left font-semibold ${
+          props.active
+            ? "text-green-900 font-bold animate-pulse"
+            : "text-yellow-900"
+        }`}
       >
         {props.prayer.en}
       </div>
-      {/* Time */}
+
+      {/* Center (Time) */}
       <div
-        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold" : "text-9xl text-yellow-900"}`}
+        class={`text-center font-semibold ${
+          props.active ? "text-green-900 font-bold" : "text-yellow-900"
+        }`}
       >
         {padZero(d.getHours())}:{padZero(d.getMinutes())}
       </div>
-      {/* Arabic */}
+
+      {/* Right (Arabic) */}
       <div
-        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold animate-pulse" : "text-9xl text-yellow-900"}`}
-        dir="rtl"
+        class={`text-right font-semibold ${
+          props.active
+            ? "text-green-900 font-bold animate-pulse"
+            : "text-yellow-900"
+        }`}
       >
         {props.prayer.ar}
       </div>
