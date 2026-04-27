@@ -9,9 +9,7 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
       {/* Left (English) */}
       <div
         class={`text-left font-semibold ${
-          props.active
-            ? "text-green-900 font-bold animate-pulse"
-            : "text-yellow-900"
+          props.active ? "text-green-900 font-bold" : "text-yellow-900"
         }`}
       >
         {props.prayer.en}
@@ -29,9 +27,7 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
       {/* Right (Arabic) */}
       <div
         class={`text-right font-semibold ${
-          props.active
-            ? "text-green-900 font-bold animate-pulse"
-            : "text-yellow-900"
+          props.active ? "text-green-900 font-bold" : "text-yellow-900"
         }`}
       >
         {props.prayer.ar}
