@@ -13,8 +13,8 @@ interface PrayerListProps {
 
 export default function PrayerList(props: PrayerListProps) {
   return (
-    <div class="flex flex-col w-full h-full pb-10 pl-10 pr-10">
-      <div class="flex-1 flex flex-col justify-center items-center">
+    <div class="flex flex-col w-full h-full pl-10 pr-10">
+      <div class="flex-1 flex flex-col items-center">
         <For each={props.filteredPrayers()}>
           {(p) => (
             <PrayerRow
@@ -23,6 +23,9 @@ export default function PrayerList(props: PrayerListProps) {
             />
           )}
         </For>
+        <div class="w-full flex flex-col items-center">
+          <img src="/border.png" class="w-128" />
+        </div>
       </div>
       <Show when={props.duhaDate()}>
         <DuhaRow dateDuha={props.duhaDate()!} dateSyuruk={props.syurukDate()} />
