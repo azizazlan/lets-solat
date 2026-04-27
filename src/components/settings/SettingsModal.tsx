@@ -19,7 +19,7 @@ export default function SettingsModal(props: Props) {
 
   const [iqamah, setIqamah] = createSignal(
     props.initialValues?.iqamah ?? {
-      alfajr: 18,
+      alfajr: 17,
       dhuhr: 10,
       alasr: 10,
       maghrib: 10,
