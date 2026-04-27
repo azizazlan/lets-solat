@@ -117,7 +117,7 @@ export default function Clock(props: { now: Accessor<Date> }) {
       </div>
 
       {/* Bottom row: dates */}
-      <div class="text-green-800 flex justify-between px-6">
+      <div class="text-green-900 flex justify-between px-6">
         <div class="text-[4vh] font-bold">
           {DAY_NAMES[today().getDay()]}, {MONTH_NAMES[today().getMonth()]}{" "}
           {today().getFullYear()}
