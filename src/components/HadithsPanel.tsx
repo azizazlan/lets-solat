@@ -6,7 +6,11 @@ type Hadith = {
   source?: string;
 };
 
-const Hadiths = () => {
+interface HadithsPanelProps {
+  mode?: string;
+}
+
+const HadithsPanel = (props: HadithsPanelProps) => {
   const [hadith, setHadith] = createSignal<Hadith | null>(null);
 
   const fetchHadith = async () => {
@@ -27,6 +31,20 @@ const Hadiths = () => {
     fetchHadith();
   });
 
+  if (props.mode === "poster") {
+    return (
+      <div class="flex flex-col items-center justify-center gap-9 w-full h-full bg-[url('/logo2.png')] bg-repeat">
+        <div class="text-center max-w-[155rem] text-white font-semibold text-8xl leading-relaxed">
+          {hadith()?.text || "Loading hadith..."}
+        </div>
+
+        <div class="font-semibold text-yellow-500 text-7xl">
+          {hadith()?.source ? `— ${hadith()?.source}` : ""}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div class="text-center bg-white h-full flex flex-col p-3">
       <div class="mt-9 text-black font-semibold text-7xl leading-relaxed">
@@ -40,4 +58,4 @@ const Hadiths = () => {
   );
 };
 
-export default Hadiths;
+export default HadithsPanel;
