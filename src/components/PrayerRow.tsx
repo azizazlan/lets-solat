@@ -7,19 +7,19 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
   return (
     <div class="w-full grid grid-cols-[1fr_auto_1fr] px-3 py-3 mb-15">
       <div
-        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold animate-pulse" : "text-9xl text-yellow-800"}`}
+        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold animate-pulse" : "text-9xl text-yellow-900"}`}
       >
         {props.prayer.en}
       </div>
       {/* Time */}
       <div
-        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold" : "text-9xl text-yellow-800"}`}
+        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold" : "text-9xl text-yellow-900"}`}
       >
         {padZero(d.getHours())}:{padZero(d.getMinutes())}
       </div>
       {/* Arabic */}
       <div
-        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold animate-pulse" : "text-9xl text-yellow-800"}`}
+        class={`font-semibold ${props.active ? "text-9xl text-green-900 font-bold animate-pulse" : "text-9xl text-yellow-900"}`}
         dir="rtl"
       >
         {props.prayer.ar}
