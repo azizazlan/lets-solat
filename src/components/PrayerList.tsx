@@ -30,29 +30,30 @@ export default function PrayerList(props: PrayerListProps) {
             <PrayerRow prayer={p} active={p.time === nextPrayer()?.time} />
           )}
         </For>
+      </div>
 
+      {/* Duaha and Syuruk section */}
+      <div class="flex flex-col">
         <div class="w-full flex flex-col items-center">
           <img src="/border.png" class="w-128" />
         </div>
-      </div>
-
-      {/* Bottom section */}
-      <div class="flex flex-row justify-between">
-        {/* Duha */}
-        <div class="text-7xl flex flex-col items-center">
-          <div class="text-green-900 font-semibold">يبدأ الضحى الساعة</div>
-          <div class="text-green-900 font-semibold">Duha</div>
-          <div class="text-9xl font-semibold text-green-900">
-            {formatTime(duha())}
+        <div class="flex flex-row justify-between">
+          {/* Duha */}
+          <div class="text-7xl flex flex-col items-center">
+            <div class="text-green-900 font-semibold">يبدأ الضحى الساعة</div>
+            <div class="text-green-900 font-semibold">Duha</div>
+            <div class="text-9xl font-semibold text-green-900">
+              {formatTime(duha())}
+            </div>
           </div>
-        </div>
 
-        {/* Syuruk */}
-        <div class="text-7xl flex flex-col items-center">
-          <div class="font-black text-green-900">الشروق</div>
-          <div class="text-7xl font-semibold text-green-900">Sunrise</div>
-          <div class="text-9xl font-semibold text-orange-800">
-            {formatTime(syuruk())}
+          {/* Syuruk */}
+          <div class="text-7xl flex flex-col items-center">
+            <div class="font-black text-green-900">الشروق</div>
+            <div class="text-7xl font-semibold text-green-900">Sunrise</div>
+            <div class="text-9xl font-semibold text-orange-800">
+              {formatTime(syuruk())}
+            </div>
           </div>
         </div>
       </div>
