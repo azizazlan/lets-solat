@@ -7,7 +7,7 @@ import type { Prayer } from "@/types/prayers";
 ======================= */
 function CountdownText(props: { value: string }) {
   return (
-    <div class={`text-[17vh] font-bold will-change-transform`}>
+    <div class={`text-[12vh] font-bold will-change-transform`}>
       {props.value}
     </div>
   );
