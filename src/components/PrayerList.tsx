@@ -24,7 +24,7 @@ export default function PrayerList(props: PrayerListProps) {
   return (
     <div class="flex flex-col w-full h-full p-9">
       {/* Prayer list */}
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col items-center flex-1">
         <For each={props.filteredPrayers()}>
           {(p) => (
             <PrayerRow prayer={p} active={p.time === nextPrayer()?.time} />
