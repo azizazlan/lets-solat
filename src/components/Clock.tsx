@@ -41,7 +41,7 @@ function HexBadge(props: { value: string | number; size?: number }) {
         y="55"
         text-anchor="middle"
         dominant-baseline="middle"
-        font-size="40"
+        font-size="50"
         font-weight="bold"
         fill="white"
       >

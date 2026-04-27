@@ -52,23 +52,15 @@ export default function PrayerHorizList(props: Props) {
           return (
             <div class="text-center">
               {/* Arabic + English */}
-              <div class="">
+              <div>
                 <div
-                  class="font-[Cairo] text-7xl text-white"
-                  classList={{
-                    "font-bold opacity-100": active(),
-                    "font-normal opacity-50": !active(),
-                  }}
+                  class={`mb-5 font-[Cairo] text-white ${active() ? "font-bold opacity-100 text-7xl" : "font-normal opacity-50 text-5xl"}`}
                 >
                   {p.ar}
                 </div>
 
                 <div
-                  class="text-7xl text-white"
-                  classList={{
-                    "font-bold opacity-100": active(),
-                    "font-normal opacity-50": !active(),
-                  }}
+                  class={`mb-5 text-white ${active() ? "font-bold opacity-100 text-6xl" : "font-normal opacity-50 text-5xl"}`}
                 >
                   {p.en}
                 </div>
@@ -76,11 +68,7 @@ export default function PrayerHorizList(props: Props) {
 
               {/* Time + iqamah */}
               <div
-                class="flex flex-col text-7xl text-white uppercase"
-                classList={{
-                  "font-bold opacity-100": active(),
-                  "font-normal opacity-50": !active(),
-                }}
+                class={`flex flex-col text-8xl text-white uppercase ${active() ? "font-bold opacity-100 animate-pulse" : "font-normal opacity-50"}`}
               >
                 <div>{p.time}</div>
 
@@ -88,8 +76,7 @@ export default function PrayerHorizList(props: Props) {
                   {(() => {
                     const key = toIqamahKey(p.en);
                     if (!key) return null;
-
-                    return `(IQMH ${getIqamahDurationInMins(key)} mins)`;
+                    return `IQMH ${getIqamahDurationInMins(key)} mins`;
                   })()}
                 </div>
               </div>

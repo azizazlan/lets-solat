@@ -1,6 +1,9 @@
 import { createSignal } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import { formatHMS, timeToDate } from "@/utils/time";
+import { playAlarm } from "@/utils/notification"; // adjust path
+import { getIqamahDuration } from "@/services/settings";
+
 export type Phase =
   | "WAITING_AZAN"
   | "DISPLAY_POSTER"
@@ -29,8 +32,6 @@ const PHASE_DURATIONS: Record<Phase, number> = {
   POST_IQAMAH: 0,
   BLACKOUT: 0,
 };
-
-import { getIqamahDuration } from "@/services/settings";
 
 // 10 seconds oscillates between WAITING_AZAN and BETWEEN_WAITING_AZAN
 export const BETWEEN_DURATION = envNumber(
@@ -84,8 +85,6 @@ export function useTimer(imageCount = 14) {
     getIqamahDuration("alasr"),
   );
 
-  let intervalId: number | undefined;
-
   /* Phase end markers */
   let iqamahEnd: number | null = null;
   let postIqamahEnd: number | null = null;
@@ -95,6 +94,10 @@ export function useTimer(imageCount = 14) {
   /* =======================
      HELPERS
   ======================= */
+  const shouldSkipPoster = (diffMs: number) => {
+    return diffMs <= 3 * 60 * 1000; // 3 minutes
+  };
+
   const filteredPrayers = () => prayers().filter((p) => p.en !== "Syuruk");
 
   const nextPrayer = () => {
@@ -175,11 +178,15 @@ export function useTimer(imageCount = 14) {
         if (diff <= AZAN_TOLERANCE_MS) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
+
           setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
           setPhase("IQAMAH");
 
           displayEnd = null;
           displayIndex = 0;
+
+          // 🔔 PLAY AZAN SOUND
+          playAlarm();
 
           return;
         }
@@ -194,14 +201,23 @@ export function useTimer(imageCount = 14) {
         if (remaining <= PHASE_TOLERANCE_MS) {
           displayEnd = nowMs + PHASE_DURATIONS[phase()];
 
-          const next = nextDisplayPhase();
-          setPhase(next);
+          let next = nextDisplayPhase();
 
+          // ⛔ Skip DISPLAY_POSTER if close to azan
+          if (next === "DISPLAY_POSTER" && shouldSkipPoster(diff)) {
+            next = nextDisplayPhase(); // move to next again
+          }
+
+          setPhase(next);
           return;
         }
 
         // ✅ Always show real azan countdown
-        setCountdown(formatHMS(diff));
+        // setCountdown(formatHMS(diff));
+        const next = formatHMS(diff);
+        if (countdown() !== next) {
+          setCountdown(next);
+        }
         return;
       }
 
@@ -230,7 +246,10 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdown(formatHMS(remaining));
+        const next = formatHMS(remaining);
+        if (countdown() !== next) {
+          setCountdown(next);
+        }
         return;
       }
 
@@ -251,7 +270,10 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdown(formatHMS(remaining));
+        const next = formatHMS(remaining);
+        if (countdown() !== next) {
+          setCountdown(next);
+        }
         return;
       }
 
@@ -272,7 +294,11 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdown(formatHMS(remaining));
+        const next = formatHMS(remaining);
+        if (countdown() !== next) {
+          setCountdown(next);
+        }
+
         return;
       }
     }
@@ -281,15 +307,33 @@ export function useTimer(imageCount = 14) {
   /* =======================
      CONTROLS
   ======================= */
+  let timeoutId: number | undefined;
+
+  /**
+   * Schedules the next tick aligned to the real clock second boundary
+   */
+  const scheduleNextTick = () => {
+    const now = Date.now();
+
+    // Align to next exact second (e.g. 12:00:01.000)
+    const delay = Math.max(1, 1000 - (now % 1000));
+
+    timeoutId = window.setTimeout(() => {
+      tick();
+      scheduleNextTick();
+    }, delay);
+  };
+
   const startTimer = () => {
     stopTimer();
-    intervalId = window.setInterval(tick, 1000);
+    tick(); // 👈 add this line (important)
+    scheduleNextTick();
   };
 
   const stopTimer = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = undefined;
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+      timeoutId = undefined;
     }
   };
 

@@ -9,9 +9,9 @@ function loadSettings(): AppSettings {
 
   const DEFAULT: AppSettings = {
     iqamah: {
-      alfajr: 18,
+      alfajr: 17,
       dhuhr: 1,
-      alasr: 10,
+      alasr: 1,
       maghrib: 10,
       alisha: 10,
     },
