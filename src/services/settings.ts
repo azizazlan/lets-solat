@@ -17,7 +17,7 @@ function loadSettings(): AppSettings {
     },
     poster: {
       isEnabled: true,
-      imageUrl: "poster/default.jpg",
+      imageUrl: null,
     },
     misc: {
       leftPanelIntervalSecs: 5,

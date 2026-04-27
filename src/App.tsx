@@ -18,6 +18,7 @@ import BlackoutPanel from "@/components/BlackoutPanel";
 import PosterPanel from "@/components/PosterPanel";
 import SettingsModal from "@/components/settings/SettingsModal";
 import SettingsPanel from "@/components/SettingsPanel";
+import HadithsPanel from "@/components/HadithsPanel";
 
 const App: Component = () => {
   const [openSettings, setOpenSettings] = createSignal<boolean>(false);
@@ -51,7 +52,7 @@ const App: Component = () => {
 
   const posterImgPath = () => {
     const s = settings();
-    return s.poster?.imageUrl ?? "";
+    return s.poster?.imageUrl;
   };
 
   const imgPoster = createMemo(() => posterImgPath());
@@ -71,7 +72,10 @@ const App: Component = () => {
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
         </Match>
-        <Match when={timer.phase() === "DISPLAY_POSTER"}>
+        <Match when={!imgPoster() && timer.phase() === "DISPLAY_POSTER"}>
+          <HadithsPanel mode="poster" />
+        </Match>
+        <Match when={imgPoster() && timer.phase() === "DISPLAY_POSTER"}>
           <PosterPanel imageUrl={imgPoster()} />
         </Match>
         <Match

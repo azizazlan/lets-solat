@@ -3,7 +3,7 @@ import type { PosterSettings } from "@/types/settings";
 const DEFAULT_VALUES: PosterSettings = {
   poster: {
     isEnabled: true,
-    imageUrl: "/poster/default.jpg",
+    imageUrl: null,
   },
 };
 
