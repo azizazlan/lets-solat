@@ -23,7 +23,7 @@ const DISPLAY_PHASES: Phase[] = [
 ];
 
 const PHASE_DURATIONS: Record<Phase, number> = {
-  WAITING_AZAN: 15000,
+  WAITING_AZAN: 25000,
   DISPLAY_POSTER: 25000,
   DISPLAY_HADITHS: 15000,
   DISPLAY_APP_EVENTS: 15000,
@@ -199,6 +199,7 @@ export function useTimer(imageCount = 14) {
         const remaining = displayEnd - nowMs;
 
         if (remaining <= PHASE_TOLERANCE_MS) {
+          // console.log(`phase ${phase()} duration ${PHASE_DURATIONS[phase()]}`);
           displayEnd = nowMs + PHASE_DURATIONS[phase()];
 
           let next = nextDisplayPhase();
