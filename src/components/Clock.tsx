@@ -25,7 +25,7 @@ const MONTH_NAMES = [
 ];
 
 function HexBadge(props: { value: string | number; size?: number }) {
-  const size = 255;
+  const { size } = props;
   const hexPoints = "50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25";
 
   return (
@@ -97,23 +97,23 @@ export default function Clock(props: { now: Accessor<Date> }) {
   };
 
   return (
-    <div class="flex flex-col bg-white pt-9">
-      <div>
+    <div class="min-h-[570px] flex flex-col bg-white">
+      <div class="flex flex-col flex-1">
         {/* Top row: badges + clock */}
         <div class="grid grid-cols-[1fr_auto_1fr] items-center px-3">
           {/* Left badge */}
           <div class="flex justify-start translate-x-25">
-            <HexBadge size={195} value={gregorianDay()} />
+            <HexBadge size={295} value={gregorianDay()} />
           </div>
 
           {/* Digital clock */}
-          <div class="text-9xl font-bold text-center text-green-900">
+          <div class="text-[9vh] font-bold text-center text-green-900">
             {today().toLocaleTimeString([], { hour12: false })}
           </div>
 
           {/* Right badge */}
           <div class="flex justify-end mr-25">
-            <HexBadge size={195} value={hijriDay()} />
+            <HexBadge size={295} value={hijriDay()} />
           </div>
         </div>
 
