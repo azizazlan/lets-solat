@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, createMemo } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import { formatHMS, timeToDate } from "@/utils/time";
 import { playAlarm } from "@/utils/notification"; // adjust path
@@ -98,15 +98,17 @@ export function useTimer(imageCount = 14) {
     return diffMs <= 3 * 60 * 1000; // 3 minutes
   };
 
-  const filteredPrayers = () => prayers().filter((p) => p.en !== "Syuruk");
+  const filteredPrayers = createMemo(() =>
+    prayers().filter((p) => p.en !== "Syuruk"),
+  );
 
-  const nextPrayer = () => {
+  const nextPrayer = createMemo(() => {
     const current = now();
     const list = filteredPrayers();
     if (!list.length) return undefined;
 
     return list.find((p) => timeToDate(p.time) > current) ?? list[0];
-  };
+  });
 
   const lastPrayer = () => {
     const current = now();
@@ -120,8 +122,7 @@ export function useTimer(imageCount = 14) {
     );
   };
 
-  const getNextPrayerTime = (current: Date) => {
-    const list = filteredPrayers();
+  const getNextPrayerTime = (current: Date, list: Prayer[]) => {
     if (!list.length) return null;
 
     const idx = list.findIndex((p) => timeToDate(p.time) > current);
@@ -140,28 +141,26 @@ export function useTimer(imageCount = 14) {
 
     setNow(current);
 
-    if (!prayers().length) return;
+    const list = filteredPrayers(); // ✅ computed once
+    if (!list.length) return;
+
+    const np = nextPrayer(); // ✅ memoized
 
     let EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alasr");
-    const np = nextPrayer();
-    if (np && np.en === "ALFAJR") {
-      EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alfajr"); // 18 minutes for Fajr
-      setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
-    } else if (np && np.en === "DHUHR") {
+
+    if (np?.en === "ALFAJR") {
+      EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alfajr");
+    } else if (np?.en === "DHUHR") {
       EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("dhuhr");
-      setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
-    } else if (np && np.en === "ALASR") {
+    } else if (np?.en === "ALASR") {
       EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alasr");
-      setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
-    } else if (np && np.en === "MAGHRIB") {
+    } else if (np?.en === "MAGHRIB") {
       EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("maghrib");
-      setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
-    } else if (np && np.en === "ALISHA") {
+    } else if (np?.en === "ALISHA") {
       EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alisha");
-      setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
-    } else {
-      setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
     }
+
+    setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
 
     switch (phase()) {
       case "WAITING_AZAN":
@@ -169,7 +168,7 @@ export function useTimer(imageCount = 14) {
       case "DISPLAY_HADITHS":
       case "DISPLAY_APP_EVENTS":
       case "DISPLAY_PRAYER_TIMES": {
-        const nextPrayerTime = getNextPrayerTime(current);
+        const nextPrayerTime = getNextPrayerTime(current, list);
         if (!nextPrayerTime) return;
 
         const diff = nextPrayerTime.getTime() - nowMs;
