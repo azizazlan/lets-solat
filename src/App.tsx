@@ -62,7 +62,7 @@ const App: Component = () => {
   };
 
   return (
-    <div class="flex flex-row w-full h-full">
+    <div class="flex flex-row w-full h-full transition-opacity duration-300">
       <SettingsPanel handleOpenModal={handleOpenModal} />
       <Show when={openSettings()}>
         <SettingsModal

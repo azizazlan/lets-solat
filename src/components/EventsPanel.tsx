@@ -12,10 +12,16 @@ export default function EventsPanel() {
 
   const [mode, setMode] = createSignal<"today" | "tomorrow">("today");
 
-  // rotate every 10s
+  // rotate every 7s (ONLY if both have data)
   onMount(() => {
     const interval = setInterval(() => {
-      setMode((prev) => (prev === "today" ? "tomorrow" : "today"));
+      const d = data();
+      if (!d) return;
+
+      // 👉 only rotate if BOTH have events
+      if (d.today.length > 0 && d.tomorrow.length > 0) {
+        setMode((prev) => (prev === "today" ? "tomorrow" : "today"));
+      }
     }, 7000);
 
     onCleanup(() => clearInterval(interval));
@@ -30,14 +36,11 @@ export default function EventsPanel() {
     const d = data();
     if (!d) return undefined;
 
-    const today = d.today[0];
-    const tomorrow = d.tomorrow[0];
+    if (mode() === "today" && d.today[0]) return d.today[0];
+    if (mode() === "tomorrow" && d.tomorrow[0]) return d.tomorrow[0];
 
-    if (mode() === "today" && today) return today;
-    if (mode() === "tomorrow" && tomorrow) return tomorrow;
-
-    // fallback if one side empty
-    return today ?? tomorrow;
+    // fallback
+    return d.today[0] ?? d.tomorrow[0];
   };
 
   return (
@@ -58,30 +61,36 @@ export default function EventsPanel() {
             </div>
           }
         >
-          {/* Content */}
           <div class="text-center">
             {/* Title */}
-            <div class="text-8xl font-black text-green-700 mb-7">
+            <div class="text-8xl font-black text-yellow-700 mb-7">
               {mode() === "today"
-                ? "Hari Ini,... إن شاء الله"
-                : "Esok ... إن شاء الله"}
+                ? "Hari Ini, إن شاء الله"
+                : data()?.tomorrow?.length
+                  ? "Esok, إن شاء الله"
+                  : ""}
             </div>
 
             {/* Event title */}
-            <div class="text-9xl font-bold text-green-800">
+            <div class="mt-7 text-9xl font-bold text-green-800">
               {currentEvent()?.title}
             </div>
 
             {/* Speaker image */}
-            <Show when={currentEvent()?.speakerCode}>
-              <div class="flex justify-center my-4">
-                <img
-                  class="w-[16vw] rounded-lg object-cover"
-                  src={`/data/speaker-imgs/${currentEvent()!.speakerCode}.png`}
-                  alt={currentEvent()?.speaker}
-                />
-              </div>
-            </Show>
+            <div class="w-[16vw] h-[25vw] mx-auto my-4">
+              <Show when={currentEvent()?.speakerCode} keyed>
+                {(code) => (
+                  <img
+                    class="rounded object-cover opacity-0 transition-opacity duration-500"
+                    src={`/data/speaker-imgs/${code}.png`}
+                    alt={currentEvent()?.speaker}
+                    onLoad={(e) =>
+                      e.currentTarget.classList.remove("opacity-0")
+                    }
+                  />
+                )}
+              </Show>
+            </div>
 
             {/* Speaker name */}
             <Show when={currentEvent()?.speaker}>
