@@ -33,7 +33,11 @@ export default function LeftPanel(props: LeftPanelProps) {
         <Match when={props.phase !== "POST_IQAMAH"}>
           <ClockDatePanel now={props.now} />
           <Switch>
-            <Match when={props.phase === "DISPLAY_HADITHS"}>
+            <Match
+              when={
+                props.phase === "IQAMAH" || props.phase === "DISPLAY_HADITHS"
+              }
+            >
               <HadithsPanel />
             </Match>
             <Match
@@ -43,8 +47,8 @@ export default function LeftPanel(props: LeftPanelProps) {
             </Match>
             <Match
               when={
-                props.phase === "DISPLAY_PRAYER_TIMES" ||
                 props.phase === "WAITING_AZAN" ||
+                props.phase === "DISPLAY_PRAYER_TIMES" ||
                 !thereAreAppEvents()
               }
             >

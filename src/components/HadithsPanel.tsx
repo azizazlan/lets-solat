@@ -1,4 +1,4 @@
-import { createSignal, onMount } from "solid-js";
+import { createSignal, onMount, onCleanup } from "solid-js";
 
 type Hadith = {
   id: number;
@@ -11,6 +11,7 @@ interface HadithsPanelProps {
 }
 
 const HadithsPanel = (props: HadithsPanelProps) => {
+  const [shownAt, setShownAt] = createSignal<number>(Date.now());
   const [hadith, setHadith] = createSignal<Hadith | null>(null);
 
   const fetchHadith = async () => {
@@ -42,13 +43,30 @@ const HadithsPanel = (props: HadithsPanelProps) => {
       localStorage.setItem("shownHadithIds", JSON.stringify(shownIds));
 
       setHadith(selected);
+      setShownAt(Date.now()); // 👈 track start time
     } catch (error) {
       console.error("Error loading hadith:", error);
     }
   };
 
+  let interval: number;
+
   onMount(() => {
     fetchHadith();
+
+    interval = window.setInterval(() => {
+      const now = Date.now();
+      const diff = now - shownAt();
+
+      // ✅ If current hadith > 5 minutes → force next
+      if (diff >= 2 * 60 * 1000) {
+        fetchHadith();
+      }
+    }, 1000); // check every second (cheap)
+  });
+
+  onCleanup(() => {
+    clearInterval(interval);
   });
 
   if (props.mode === "poster") {
