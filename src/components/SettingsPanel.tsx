@@ -1,3 +1,9 @@
+import {
+  isAudioUnlocked,
+  isNotificationEnabled,
+  toggleNotification,
+} from "@/utils/notification";
+
 interface SettingsPanelProps {
   handleOpenModal: () => void;
 }
@@ -10,6 +16,15 @@ export default function SettingsPanel(props: SettingsPanelProps) {
         class="text-white cursor-pointer border border-2 font-semibold rounded-md px-3 py-3 opacity-50 hover:opacity-100"
       >
         Settings ...
+      </button>
+
+      <button
+        onClick={() => toggleNotification()}
+        class="text-white cursor-pointer border border-2 font-semibold rounded-md px-3 py-3 opacity-50 hover:opacity-100"
+      >
+        {isAudioUnlocked() && isNotificationEnabled()
+          ? "Notification ON"
+          : "Notification OFF"}
       </button>
     </div>
   );

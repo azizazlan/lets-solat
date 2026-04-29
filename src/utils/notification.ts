@@ -1,11 +1,21 @@
 import { createSignal } from "solid-js";
 
 const [audioUnlocked, setAudioUnlocked] = createSignal(false);
+const [isNotification, setIsNotification] = createSignal(false);
 
 const audio = new Audio("/alarm.mp3");
 
+export function isNotificationEnabled() {
+  return isNotification();
+}
+
+export async function toggleNotification() {
+  await unlockAudio();
+  setIsNotification((p) => !p);
+}
+
 export function isAudioUnlocked() {
-  return audioUnlocked;
+  return audioUnlocked();
 }
 
 export function unlockAudio(): Promise<boolean> {
@@ -33,6 +43,8 @@ export function unlockAudio(): Promise<boolean> {
 let isPlaying = false;
 
 export async function playAlarm() {
+  if (!isNotification()) return;
+
   if (isPlaying) return;
 
   try {
