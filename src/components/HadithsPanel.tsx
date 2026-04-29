@@ -18,10 +18,30 @@ const HadithsPanel = (props: HadithsPanelProps) => {
       const response = await fetch("/data/hadiths.json");
       const hadiths: Hadith[] = await response.json();
 
-      if (hadiths.length > 0) {
-        const randomIndex = Math.floor(Math.random() * hadiths.length);
-        setHadith(hadiths[randomIndex]);
+      if (hadiths.length === 0) return;
+
+      // Get previously shown IDs
+      const stored = localStorage.getItem("shownHadithIds");
+      let shownIds: number[] = stored ? JSON.parse(stored) : [];
+
+      // Filter out already shown hadiths
+      let availableHadiths = hadiths.filter((h) => !shownIds.includes(h.id));
+
+      // Reset if all have been shown
+      if (availableHadiths.length === 0) {
+        shownIds = [];
+        availableHadiths = hadiths;
       }
+
+      // Pick random from remaining
+      const randomIndex = Math.floor(Math.random() * availableHadiths.length);
+      const selected = availableHadiths[randomIndex];
+
+      // Save this ID
+      shownIds.push(selected.id);
+      localStorage.setItem("shownHadithIds", JSON.stringify(shownIds));
+
+      setHadith(selected);
     } catch (error) {
       console.error("Error loading hadith:", error);
     }
