@@ -9,7 +9,7 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
       {/* Left (English) */}
       <div
         class={`text-left font-semibold ${
-          props.active ? "text-green-900 font-bold" : "text-yellow-900"
+          props.active ? "text-green-900 font-bold" : "text-yellow-700"
         }`}
       >
         {props.prayer.en}
@@ -18,7 +18,7 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
       {/* Center (Time) */}
       <div
         class={`text-center font-semibold ${
-          props.active ? "text-green-900 font-bold" : "text-yellow-900"
+          props.active ? "text-green-900 font-bold" : "text-yellow-700"
         }`}
       >
         {padZero(d.getHours())}:{padZero(d.getMinutes())}
@@ -27,7 +27,7 @@ export default function PrayerRow(props: { prayer: Prayer; active: boolean }) {
       {/* Right (Arabic) */}
       <div
         class={`text-right font-semibold ${
-          props.active ? "text-green-900 font-bold" : "text-yellow-900"
+          props.active ? "text-green-900 font-bold" : "text-yellow-700"
         }`}
       >
         {props.prayer.ar}

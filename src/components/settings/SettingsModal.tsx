@@ -94,14 +94,14 @@ export default function SettingsModal(props: Props) {
         <div class="flex justify-end gap-3 border-t pt-4 mt-4">
           <button
             onClick={props.onClose}
-            class="px-6 py-3 text-base border-2 border-gray-700 bg-white text-black hover:bg-gray-100 transition"
+            class="px-6 py-3 text-3xl border-2 border-gray-700 bg-white text-black hover:bg-gray-100 transition"
           >
             Cancel
           </button>
 
           <button
             onClick={handleSave}
-            class="px-6 py-3 text-base font-bold bg-green-900 text-white hover:bg-gray-800 transition"
+            class="px-6 py-3 text-3xl font-bold bg-green-900 text-white hover:bg-gray-800 transition"
           >
             Save
           </button>
