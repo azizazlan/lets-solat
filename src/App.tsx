@@ -82,11 +82,7 @@ const App: Component = () => {
         <Match when={imgPoster() && timer.phase() === "DISPLAY_POSTER"}>
           <PosterPanel imageUrl={imgPoster()} />
         </Match>
-        <Match
-          when={
-            timer.phase() === "WAITING_AZAN" || timer.phase() !== "BLACKOUT"
-          }
-        >
+        <Match when={timer.phase() !== "BLACKOUT"}>
           <LeftPanel
             phase={timer.phase()}
             now={timer.now}
