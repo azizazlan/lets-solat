@@ -24,9 +24,9 @@ export default function IqamahTab(props: {
   };
 
   const row = (label: string, key: keyof IqamahSettings) => (
-    <div class="flex items-center justify-between max-w-[550px] mt-2">
+    <div class="flex items-center justify-between max-w-[550px] mb-7">
       {/* Label */}
-      <label class="text-black text-sm font-medium">{label}</label>
+      <label class="text-black text-3xl font-medium">{label}</label>
 
       {/* Controls */}
       <div class="flex items-center gap-2">
@@ -45,7 +45,7 @@ export default function IqamahTab(props: {
           max="20"
           value={safeValues()[key]}
           onInput={(e) => update(key, Number(e.currentTarget.value))}
-          class="w-12 h-8 text-center text-sm border border-gray-300 text-black"
+          class="w-15 h-9 text-center text-3xl border border-gray-300 text-black"
         />
 
         {/* plus */}
@@ -61,7 +61,7 @@ export default function IqamahTab(props: {
 
   return (
     <div class="bg-white p-4">
-      <div class="text-sm text-black mb-6">Duration in minutes</div>
+      <div class="text-3xl text-black mb-6">Duration in minutes</div>
 
       {row("ALFAJR", "alfajr")}
       {row("DHUHR", "dhuhr")}

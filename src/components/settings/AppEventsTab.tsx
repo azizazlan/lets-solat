@@ -111,11 +111,11 @@ export default function AppEventsTab(props: {
   };
 
   return (
-    <div class="flex gap-6 w-full h-full text-black text-2xl">
+    <div class="flex gap-6 w-full h-full text-black text-3xl">
       {/* LEFT: FORM */}
       <div class="flex-1 flex flex-col gap-3 overflow-auto pr-2">
         <div class="flex items-center gap-2">
-          <div class="border px-3 py-0 min-w-[40px] text-center">
+          <div class="border px-3 min-w-[40px] text-center">
             {getDayLabel(form().date)}
           </div>
 
@@ -138,27 +138,27 @@ export default function AppEventsTab(props: {
           placeholder="Kuliah Maghrib"
           value={form().title}
           onInput={(e) => update("title", e.currentTarget.value)}
-          class="px-2 py-1 border"
+          class="px-3 py-1 border"
         />
 
         <input
           placeholder="Speaker name"
           value={form().speaker}
           onInput={(e) => update("speaker", e.currentTarget.value)}
-          class="px-2 py-1 border"
+          class="px-3 border"
         />
 
         <input
           placeholder="Speaker code"
           value={form().speakerCode}
           onInput={(e) => update("speakerCode", e.currentTarget.value)}
-          class="px-2 py-1 border"
+          class="px-3  border"
         />
 
         <div class="flex flex-row justify-end w-full ">
           <button
             onClick={saveAppEvent}
-            class="cursor-pointer bg-green-900 text-xl text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
+            class="cursor-pointer bg-green-900 text-3xl text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
           >
             {editingId() ? "Update" : "Add"}
           </button>
@@ -184,7 +184,7 @@ export default function AppEventsTab(props: {
             >
               {/* LEFT: index + date */}
               <div class="flex items-center gap-3">
-                <div class="p-3 min-w-[55px] flex justify-center items-center text-2xl font-semibold bg-yellow-800 text-white">
+                <div class="p-3 min-w-[55px] flex justify-center items-center text-3xl font-semibold bg-yellow-800 text-white">
                   {index + 1}
                 </div>
 

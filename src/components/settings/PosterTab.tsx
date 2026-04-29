@@ -31,22 +31,17 @@ export default function PosterTab(props: {
 
   const toggleRow = (label: string, key: keyof PosterSettings) => (
     <div>
-      <span style={{ "font-size": "1vh", color: "black" }}>{label}</span>
-
+      <span class="text-3xl text-black">{label}</span>
       {/* Kiosk-friendly toggle */}
       <button
         onClick={() =>
           update({ [key]: !props.value[key] } as Partial<PosterSettings>)
         }
-        style={{
-          width: "2.7vh",
-          height: "1.7vh",
-          "font-size": "0.7vh",
-          border: "none",
-          cursor: "pointer",
-          background: props.value[key] ? "darkgreen" : "#ccc",
-          color: props.value[key] ? "white" : "black",
-        }}
+        class={`
+    flex flex-row w-32 h-17 text-3xl justify-center items-center
+    border-none cursor-pointer font-bold
+    ${props.value[key] ? "bg-green-800 text-white" : "bg-gray-300 text-black"}
+  `}
       >
         {props.value[key] ? "ON" : "OFF"}
       </button>
@@ -57,7 +52,7 @@ export default function PosterTab(props: {
     <div class="bg-white text-black">
       <div class="flex flex-col mt-[1vh]">
         <div class="flex flex-col justify-start">
-          <div>Poster</div>
+          <div class="text-3xl text-black">Enable poster</div>
           <div>{toggleRow("", "isEnabled")}</div>
         </div>
 
@@ -66,7 +61,7 @@ export default function PosterTab(props: {
             type="file"
             accept="image/*"
             onChange={handleFile}
-            class="text-black mt-[0vh] text-[1vh] border cursor-pointer"
+            class="text-3xl text-black mt-[0vh] border cursor-pointer"
           />
 
           {props.value.imageUrl && (
