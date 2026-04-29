@@ -43,8 +43,14 @@ export default function EventsPanel() {
     return d.today[0] ?? d.tomorrow[0];
   };
 
+  const getDayName = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString("ms-MY", {
+      weekday: "long",
+    });
+  };
+
   return (
-    <div class="h-full w-full bg-white flex items-center justify-center">
+    <div class="h-full w-full bg-white flex justify-center">
       {/* Loading */}
       <Show
         when={!loading}
@@ -63,25 +69,25 @@ export default function EventsPanel() {
         >
           <div class="text-center">
             {/* Title */}
-            <div class="text-8xl font-black text-yellow-700 mb-7">
+            <div class="text-9xl text-yellow-700 font-semibold">
               {mode() === "today"
-                ? "Hari Ini, إن شاء الله"
+                ? `Hari ini, ${getDayName(currentEvent()?.date)}`
                 : data()?.tomorrow?.length
-                  ? "Esok, إن شاء الله"
+                  ? "Esok,"
                   : ""}
             </div>
 
             {/* Event title */}
-            <div class="mt-7 text-9xl font-bold text-green-800">
+            <div class="text-9xl font-bold text-green-800 mt-7">
               {currentEvent()?.title}
             </div>
 
             {/* Speaker image */}
-            <div class="w-[16vw] h-[25vw] mx-auto my-4">
+            <div class="w-[16vw] h-[24vw] mx-auto my-7">
               <Show when={currentEvent()?.speakerCode} keyed>
                 {(code) => (
                   <img
-                    class="rounded object-cover opacity-0 transition-opacity duration-500"
+                    class="rounded-xl object-cover opacity-0 transition-opacity duration-500"
                     src={`/data/speaker-imgs/${code}.png`}
                     alt={currentEvent()?.speaker}
                     onLoad={(e) =>

@@ -35,13 +35,18 @@ export default function LeftPanel(props: LeftPanelProps) {
           <Switch>
             <Match
               when={
-                props.phase === "IQAMAH" || props.phase === "DISPLAY_HADITHS"
+                props.phase === "DISPLAY_HADITHS" ||
+                (props.phase === "IQAMAH" && !thereAreAppEvents())
               }
             >
               <HadithsPanel />
             </Match>
             <Match
-              when={props.phase === "DISPLAY_APP_EVENTS" && thereAreAppEvents()}
+              when={
+                (props.phase === "DISPLAY_APP_EVENTS" ||
+                  props.phase === "IQAMAH") &&
+                thereAreAppEvents()
+              }
             >
               <EventsPanel />
             </Match>
