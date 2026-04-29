@@ -8,7 +8,7 @@ import WaitingAzanPanel from "./WaitingAzanPanel";
 
 export default function RightPanel(props: {
   phase: Phase;
-  countdown: string;
+  countdownSeconds: number;
   prayer?: Prayer;
   lastPrayer?: () => Prayer | undefined;
   filteredPrayers?: () => Prayer[];
@@ -22,7 +22,7 @@ export default function RightPanel(props: {
         </Match>
         <Match when={props.phase === "IQAMAH"}>
           <IqamahPanel
-            countdown={props.countdown}
+            countdownSeconds={props.countdownSeconds()}
             filteredPrayers={props.filteredPrayers}
             lastPrayer={props.lastPrayer}
           />
@@ -37,7 +37,7 @@ export default function RightPanel(props: {
         >
           <WaitingAzanPanel
             prayer={props.prayer}
-            countdown={props.countdown}
+            countdownSeconds={props.countdownSeconds()}
             filteredPrayers={props.filteredPrayers}
             nextPrayer={props.nextPrayer}
           />

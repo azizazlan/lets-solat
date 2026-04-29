@@ -51,7 +51,7 @@ function HexBadge(props: { value: string | number; size?: number }) {
   );
 }
 
-export default function Clock(props: { now: Accessor<Date> }) {
+export default function ClockDatePanel(props: { now: Accessor<Date> }) {
   const today = () => props.now();
   // console.log(today());
 

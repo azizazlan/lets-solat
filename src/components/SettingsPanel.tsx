@@ -15,7 +15,7 @@ export default function SettingsPanel(props: SettingsPanelProps) {
       <div class="flex items-center gap-2">
         <button
           onClick={props.handleOpenModal}
-          class="text-white cursor-pointer border border-2 font-semibold rounded-md px-9 py-9 opacity-10 hover:opacity-100"
+          class="text-white cursor-pointer border border-2 font-semibold rounded-md px-9 py-9 opacity-30 hover:opacity-100"
         >
           ⚙
         </button>
