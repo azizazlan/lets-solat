@@ -12,7 +12,6 @@ import { useTimer } from "@/services/timer";
 import { useSettings, saveSettings } from "@/services/settings";
 import { loadTodayPrayers } from "@/services/prayers";
 import { timeToDate } from "@/utils/time";
-import { unlockAudio } from "@/utils/notification";
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import BlackoutPanel from "@/components/BlackoutPanel";
@@ -59,7 +58,6 @@ const App: Component = () => {
   const imgPoster = createMemo(() => posterImgPath());
 
   const handleOpenModal = () => {
-    unlockAudio();
     setOpenSettings(true);
   };
 
