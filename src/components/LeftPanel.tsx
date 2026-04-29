@@ -1,5 +1,5 @@
 import { Match, Switch, createEffect, createSignal, onCleanup } from "solid-js";
-import Clock from "./Clock";
+import ClockDatePanel from "./ClockDatePanel";
 import PrayerList from "./PrayerList";
 import EventsPanel from "./EventsPanel";
 import HadithsPanel from "./HadithsPanel";
@@ -31,7 +31,7 @@ export default function LeftPanel(props: LeftPanelProps) {
           <PostIqamahVideo />
         </Match>
         <Match when={props.phase !== "POST_IQAMAH"}>
-          <Clock now={props.now} />
+          <ClockDatePanel now={props.now} />
           <Switch>
             <Match when={props.phase === "DISPLAY_HADITHS"}>
               <HadithsPanel />

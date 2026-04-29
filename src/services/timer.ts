@@ -1,6 +1,6 @@
 import { createSignal, createMemo } from "solid-js";
 import type { Prayer } from "@/types/prayers";
-import { formatHMS, timeToDate } from "@/utils/time";
+import { timeToDate } from "@/utils/time";
 import { playAlarm } from "@/utils/notification"; // adjust path
 import { getIqamahDuration } from "@/services/settings";
 
@@ -79,7 +79,8 @@ export function useTimer(imageCount = 14) {
   const [now, setNow] = createSignal(new Date());
   const [prayers, setPrayers] = createSignal<Prayer[]>([]);
   const [phase, setPhase] = createSignal<Phase>("WAITING_AZAN");
-  const [countdown, setCountdown] = createSignal("00:00:00");
+  const [countdownSeconds, setCountdownSeconds] = createSignal<number>(0);
+  const countdown = () => countdownSeconds();
   const [imageIndex, setImageIndex] = createSignal(0);
   const [effectiveIqamahDuration, setEffectiveIqamahDuration] = createSignal(
     getIqamahDuration("alasr"),
@@ -178,7 +179,7 @@ export function useTimer(imageCount = 14) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
 
-          setCountdown(formatHMS(EFFECTIVE_IQAMAH_DURATION));
+          setCountdownSeconds(EFFECTIVE_IQAMAH_DURATION / 1000);
           setPhase("IQAMAH");
 
           displayEnd = null;
@@ -212,12 +213,7 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        // ✅ Always show real azan countdown
-        // setCountdown(formatHMS(diff));
-        const next = formatHMS(diff);
-        if (countdown() !== next) {
-          setCountdown(next);
-        }
+        setCountdownSeconds(Math.floor(diff / 1000));
         return;
       }
 
@@ -246,10 +242,8 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        const next = formatHMS(remaining);
-        if (countdown() !== next) {
-          setCountdown(next);
-        }
+        setCountdownSeconds(Math.floor(remaining / 1000));
+
         return;
       }
 
@@ -270,10 +264,8 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        const next = formatHMS(remaining);
-        if (countdown() !== next) {
-          setCountdown(next);
-        }
+        setCountdownSeconds(Math.floor(remaining / 1000));
+
         return;
       }
 
@@ -289,15 +281,12 @@ export function useTimer(imageCount = 14) {
 
         if (remaining <= PHASE_TOLERANCE_MS) {
           blackoutEnd = null;
-          setCountdown("00:00:00");
+          setCountdownSeconds(0);
           setPhase("WAITING_AZAN");
           return;
         }
 
-        const next = formatHMS(remaining);
-        if (countdown() !== next) {
-          setCountdown(next);
-        }
+        setCountdownSeconds(Math.floor(remaining / 1000));
 
         return;
       }
@@ -348,7 +337,8 @@ export function useTimer(imageCount = 14) {
     displayIndex = 0;
 
     setImageIndex(0);
-    setCountdown("00:00:00");
+    setCountdownSeconds(0);
+
     setPhase("WAITING_AZAN");
   };
 
@@ -357,7 +347,7 @@ export function useTimer(imageCount = 14) {
     prayers,
     setPrayers,
     phase,
-    countdown,
+    countdownSeconds, // NUMBER only   countdownSeconds,
     imageIndex,
     filteredPrayers,
     nextPrayer,

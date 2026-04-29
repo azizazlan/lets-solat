@@ -97,7 +97,7 @@ const App: Component = () => {
           />
           <RightPanel
             phase={timer.phase()}
-            countdown={timer.countdown()}
+            countdownSeconds={timer.countdownSeconds}
             prayer={nextPrayer()}
             lastPrayer={lastPrayer}
             nextPrayer={nextPrayer}
