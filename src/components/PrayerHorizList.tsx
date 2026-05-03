@@ -30,18 +30,18 @@ export default function PrayerHorizList(props: Props) {
             <div class="text-center">
               <div>
                 <div
-                  class={`mb-5 font-[Cairo] text-white ${active() ? "font-bold opacity-100 text-8xl" : "font-semibold opacity-65 text-7xl"}`}
+                  class={`mb-5 font-[Cairo] text-white ${active() ? "font-bold opacity-100 text-7xl" : "font-semibold opacity-30 text-7xl"}`}
                 >
                   {p.ar}
                 </div>
                 <div
-                  class={`mb-5 text-white ${active() ? "font-bold opacity-100 text-8xl" : "font-semibold opacity-65 text-7xl"}`}
+                  class={`mb-5 text-white ${active() ? "font-bold opacity-100 text-7xl" : "font-semibold opacity-30 text-7xl"}`}
                 >
                   {p.en}
                 </div>
               </div>
               <div
-                class={`flex flex-col text-white uppercase ${active() ? "text-9xl font-bold opacity-100" : "text-7xl font-semibold opacity-65"}`}
+                class={`flex flex-col text-white uppercase ${active() ? "text-7xl font-bold opacity-100" : "text-7xl font-semibold opacity-30"}`}
               >
                 <div>{p.time}</div>
               </div>
