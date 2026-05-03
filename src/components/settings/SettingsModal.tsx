@@ -6,6 +6,7 @@ import PosterTab from "./PosterTab";
 import MiscTab from "./MiscTab";
 import PrayerTimesTab from "./PrayerTimesTab";
 import type { AppSettings, TabKey } from "@/types/settings";
+import { DEFAULT } from "@/services/settings";
 import type { AppEvent } from "@/types/app-event";
 
 type Props = {
@@ -18,13 +19,7 @@ export default function SettingsModal(props: Props) {
   const [tab, setTab] = createSignal<TabKey>("iqamah");
 
   const [iqamah, setIqamah] = createSignal(
-    props.initialValues?.iqamah ?? {
-      alfajr: 17,
-      dhuhr: 10,
-      alasr: 10,
-      maghrib: 10,
-      alisha: 10,
-    },
+    props.initialValues?.iqamah ?? { ...DEFAULT.iqamah },
   );
   const [poster, setPoster] = createSignal(
     props.initialValues?.poster ?? {

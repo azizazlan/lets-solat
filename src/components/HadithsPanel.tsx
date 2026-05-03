@@ -7,7 +7,7 @@ type Hadith = {
 };
 
 interface HadithsPanelProps {
-  mode?: string;
+  wideMode?: boolean;
 }
 
 const HadithsPanel = (props: HadithsPanelProps) => {
@@ -69,17 +69,17 @@ const HadithsPanel = (props: HadithsPanelProps) => {
     clearInterval(interval);
   });
 
-  if (props.mode === "poster") {
+  if (props.wideMode) {
     return (
       <div class="flex flex-col items-center justify-center gap-9 w-full h-full bg-[url('/logo2.png')] bg-repeat">
         <div class="w-full flex flex-col items-center">
           <img src="/border.png" class="w-128" />
         </div>
-        <div class="text-center max-w-[155rem] text-white font-semibold text-8xl leading-relaxed">
+        <div class="text-center max-w-[165rem] text-white font-semibold text-8xl leading-relaxed">
           {hadith()?.text || "Loading hadith..."}
         </div>
 
-        <div class="font-semibold text-yellow-500 text-7xl">
+        <div class="font-semibold text-yellow-600 text-7xl">
           {hadith()?.source ? `— ${hadith()?.source}` : ""}
         </div>
         <div class="w-full flex flex-col items-center">
@@ -95,10 +95,10 @@ const HadithsPanel = (props: HadithsPanelProps) => {
         {hadith()?.text || "Loading hadith..."}
       </div>
 
-      <div class="font-semibold text-yellow-700 text-7xl mt-9">
+      <div class="font-semibold text-yellow-800 text-7xl mt-9">
         {hadith()?.source ? `— ${hadith()?.source}` : ""}
       </div>
-      <div class="w-full flex flex-col items-center mt-12">
+      <div class="w-full flex flex-col items-center mt-13">
         <img src="/border.png" class="w-128" />
       </div>
     </div>

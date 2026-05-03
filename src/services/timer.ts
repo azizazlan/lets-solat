@@ -2,12 +2,13 @@ import { createSignal, createMemo } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import { timeToDate } from "@/utils/time";
 import { playAlarm } from "@/utils/notification"; // adjust path
-import { getIqamahDuration } from "@/services/settings";
+import { getIqamahDuration, isPosterEnabled } from "@/services/settings";
 
 export type Phase =
   | "WAITING_AZAN"
   | "DISPLAY_POSTER"
   | "DISPLAY_HADITHS"
+  | "DISPLAY_HADITHS_WIDE"
   | "DISPLAY_APP_EVENTS"
   | "DISPLAY_PRAYER_TIMES"
   | "IQAMAH"
@@ -18,16 +19,18 @@ const DISPLAY_PHASES: Phase[] = [
   "WAITING_AZAN",
   "DISPLAY_POSTER",
   "DISPLAY_HADITHS",
+  "DISPLAY_HADITHS_WIDE",
   "DISPLAY_APP_EVENTS",
   "DISPLAY_PRAYER_TIMES",
 ];
 
 const PHASE_DURATIONS: Record<Phase, number> = {
-  WAITING_AZAN: 25000,
-  DISPLAY_POSTER: 25000,
-  DISPLAY_HADITHS: 15000,
-  DISPLAY_APP_EVENTS: 15000,
-  DISPLAY_PRAYER_TIMES: 15000,
+  WAITING_AZAN: 5000,
+  DISPLAY_POSTER: 5000,
+  DISPLAY_HADITHS: 5000,
+  DISPLAY_HADITHS_WIDE: 5000,
+  DISPLAY_APP_EVENTS: 5000,
+  DISPLAY_PRAYER_TIMES: 5000,
   IQAMAH: 0,
   POST_IQAMAH: 0,
   BLACKOUT: 0,
@@ -50,7 +53,7 @@ const nextDisplayPhase = () => {
    TOLERANCES (CRITICAL)
 ======================= */
 const AZAN_TOLERANCE_MS = 1000; // wall-clock sensitive
-const PHASE_TOLERANCE_MS = 500; // relative timers
+const PHASE_TOLERANCE_MS = 700; // relative timers
 
 export const IQAMAH_IMAGE_DURATION = envNumber(
   import.meta.env.VITE_IQAMAH_IMAGE_DURATION,
@@ -133,19 +136,16 @@ export function useTimer(imageCount = 14) {
     return timeToDate(list[resolvedIndex].time, isTomorrow ? 1 : 0);
   };
 
-  /* =======================
-     TIMER LOOP
-  ======================= */
   const tick = () => {
     const current = new Date();
     const nowMs = current.getTime();
 
     setNow(current);
 
-    const list = filteredPrayers(); // ✅ computed once
+    const list = filteredPrayers();
     if (!list.length) return;
 
-    const np = nextPrayer(); // ✅ memoized
+    const np = nextPrayer();
 
     let EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alasr");
 
@@ -164,9 +164,13 @@ export function useTimer(imageCount = 14) {
     setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
 
     switch (phase()) {
+      /* =======================
+       DISPLAY PHASES
+    ======================= */
       case "WAITING_AZAN":
       case "DISPLAY_POSTER":
       case "DISPLAY_HADITHS":
+      case "DISPLAY_HADITHS_WIDE": // ✅ INCLUDED
       case "DISPLAY_APP_EVENTS":
       case "DISPLAY_PRAYER_TIMES": {
         const nextPrayerTime = getNextPrayerTime(current, list);
@@ -174,7 +178,9 @@ export function useTimer(imageCount = 14) {
 
         const diff = nextPrayerTime.getTime() - nowMs;
 
-        // 🔥 Azan reached (interrupt ANY display phase)
+        /* =======================
+         AZAN TRIGGER
+      ======================= */
         if (diff <= AZAN_TOLERANCE_MS) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
@@ -185,48 +191,69 @@ export function useTimer(imageCount = 14) {
           displayEnd = null;
           displayIndex = 0;
 
-          // 🔔 PLAY AZAN SOUND
           playAlarm();
-
           return;
         }
 
-        // ⏱ Initialize phase timer
+        /* =======================
+         PHASE TIMER INIT
+      ======================= */
         if (!displayEnd) {
           displayEnd = nowMs + PHASE_DURATIONS[phase()];
         }
 
         const remaining = displayEnd - nowMs;
 
+        /* =======================
+         PHASE TRANSITION
+      ======================= */
         if (remaining <= PHASE_TOLERANCE_MS) {
-          // console.log(`phase ${phase()} duration ${PHASE_DURATIONS[phase()]}`);
           displayEnd = nowMs + PHASE_DURATIONS[phase()];
 
           let next = nextDisplayPhase();
+          let guard = 0;
 
-          // ⛔ Skip DISPLAY_POSTER if close to azan
-          if (next === "DISPLAY_POSTER" && shouldSkipPoster(diff)) {
-            next = nextDisplayPhase(); // move to next again
+          const shouldSkipPoster = (diffMs: number) => diffMs <= 3 * 60 * 1000;
+
+          const shouldSkipWideHadiths = (diffMs: number) =>
+            diffMs <= 3 * 60 * 1000;
+
+          while (true) {
+            const skipPoster =
+              next === "DISPLAY_POSTER" &&
+              (shouldSkipPoster(diff) || !isPosterEnabled());
+
+            const skipWide =
+              next === "DISPLAY_HADITHS_WIDE" && shouldSkipWideHadiths(diff);
+
+            if (!skipPoster && !skipWide) break;
+
+            next = nextDisplayPhase();
+            guard++;
+
+            if (guard > DISPLAY_PHASES.length) break;
           }
 
           setPhase(next);
           return;
         }
 
+        /* =======================
+         RAW COUNTDOWN (NO DRIFT)
+      ======================= */
         setCountdownSeconds(Math.ceil(diff / 1000));
         return;
       }
 
       /* =======================
-         IQAMAH
-      ======================= */
+       IQAMAH
+    ======================= */
       case "IQAMAH": {
         if (!iqamahEnd) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
         }
 
-        // rotate images
         if (iqamahImageEnd && nowMs >= iqamahImageEnd) {
           setImageIndex((i) => (i + 1) % imageCount);
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
@@ -238,18 +265,18 @@ export function useTimer(imageCount = 14) {
           postIqamahEnd = nowMs + POST_IQAMAH_DURATION;
           iqamahEnd = null;
           iqamahImageEnd = null;
+
           setPhase("POST_IQAMAH");
           return;
         }
 
         setCountdownSeconds(Math.ceil(remaining / 1000));
-
         return;
       }
 
       /* =======================
-         POST IQAMAH
-      ======================= */
+       POST IQAMAH
+    ======================= */
       case "POST_IQAMAH": {
         if (!postIqamahEnd) {
           postIqamahEnd = nowMs + POST_IQAMAH_DURATION;
@@ -260,18 +287,18 @@ export function useTimer(imageCount = 14) {
         if (remaining <= PHASE_TOLERANCE_MS) {
           blackoutEnd = nowMs + BLACKOUT_DURATION;
           postIqamahEnd = null;
+
           setPhase("BLACKOUT");
           return;
         }
 
         setCountdownSeconds(Math.ceil(remaining / 1000));
-
         return;
       }
 
       /* =======================
-         BLACKOUT
-      ======================= */
+       BLACKOUT
+    ======================= */
       case "BLACKOUT": {
         if (!blackoutEnd) {
           blackoutEnd = nowMs + BLACKOUT_DURATION;
@@ -282,12 +309,12 @@ export function useTimer(imageCount = 14) {
         if (remaining <= PHASE_TOLERANCE_MS) {
           blackoutEnd = null;
           setCountdownSeconds(0);
+
           setPhase("WAITING_AZAN");
           return;
         }
 
-        setCountdownSeconds(Math.floor(remaining / 1000));
-
+        setCountdownSeconds(Math.ceil(remaining / 1000));
         return;
       }
     }

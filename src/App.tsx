@@ -76,8 +76,8 @@ const App: Component = () => {
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
         </Match>
-        <Match when={!imgPoster() && timer.phase() === "DISPLAY_POSTER"}>
-          <HadithsPanel mode="poster" />
+        <Match when={timer.phase() === "DISPLAY_HADITHS_WIDE"}>
+          <HadithsPanel wideMode />
         </Match>
         <Match when={imgPoster() && timer.phase() === "DISPLAY_POSTER"}>
           <PosterPanel imageUrl={imgPoster()} />
