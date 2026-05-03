@@ -21,7 +21,19 @@ export default function LeftPanel(props: LeftPanelProps) {
 
   const thereAreAppEvents = () => {
     const s = settings();
-    return s.appEvents?.length > 0;
+    if (!s?.appEvents?.length) return false;
+
+    const today = new Date();
+
+    return s.appEvents.some((event) => {
+      const d = new Date(event.date);
+
+      return (
+        d.getFullYear() === today.getFullYear() &&
+        d.getMonth() === today.getMonth() &&
+        d.getDate() === today.getDate()
+      );
+    });
   };
 
   return (

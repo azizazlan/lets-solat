@@ -22,7 +22,7 @@ export default function PrayerList(props: PrayerListProps) {
     date ? `${padZero(date.getHours())}:${padZero(date.getMinutes())}` : "N/A";
 
   return (
-    <div class="flex flex-col w-full h-full p-12">
+    <div class="flex flex-col w-full h-full p-9">
       {/* Prayer list */}
       <div class="flex flex-col items-center justify-center flex-1">
         <For each={props.filteredPrayers()}>

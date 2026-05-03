@@ -4,26 +4,26 @@ import type { AppSettings, IqamahSettings } from "@/types/settings";
 
 const STORAGE_KEY = "iqamah-settings";
 
+export const DEFAULT: AppSettings = {
+  iqamah: {
+    alfajr: 17,
+    dhuhr: 1,
+    alasr: 10,
+    maghrib: 10,
+    alisha: 10,
+  },
+  poster: {
+    isEnabled: false,
+    imageUrl: "",
+  },
+  misc: {
+    leftPanelIntervalSecs: 5,
+  },
+  appEvents: [],
+};
+
 function loadSettings(): AppSettings {
   const raw = localStorage.getItem(STORAGE_KEY);
-
-  const DEFAULT: AppSettings = {
-    iqamah: {
-      alfajr: 17,
-      dhuhr: 10,
-      alasr: 10,
-      maghrib: 10,
-      alisha: 10,
-    },
-    poster: {
-      isEnabled: true,
-      imageUrl: null,
-    },
-    misc: {
-      leftPanelIntervalSecs: 5,
-    },
-    appEvents: [],
-  };
 
   if (raw) {
     try {
@@ -70,4 +70,8 @@ export function getIqamahDuration(prayer: keyof IqamahSettings) {
 
 export function getIqamahDurationInMins(prayer: keyof IqamahSettings) {
   return msToMin(getIqamahDuration(prayer));
+}
+
+export function isPosterEnabled() {
+  return settings().poster.isEnabled;
 }

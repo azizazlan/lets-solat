@@ -1,12 +1,5 @@
 import type { IqamahSettings } from "@/types/settings";
-
-const DEFAULT_VALUES: IqamahSettings = {
-  alfajr: 17,
-  dhuhr: 10,
-  alasr: 10,
-  maghrib: 10,
-  alisha: 10,
-};
+import { DEFAULT as DEFAULT_VALUES } from "@/services/settings";
 
 export default function IqamahTab(props: {
   values?: IqamahSettings;
@@ -15,7 +8,7 @@ export default function IqamahTab(props: {
   const safeValues = () => props.values ?? DEFAULT_VALUES;
 
   const update = (key: keyof IqamahSettings, value: number) => {
-    const clamped = Math.max(5, Math.min(20, value));
+    const clamped = Math.max(1, Math.min(20, value));
 
     props.onChange({
       ...safeValues(),
