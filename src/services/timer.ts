@@ -50,7 +50,7 @@ const nextDisplayPhase = () => {
    TOLERANCES (CRITICAL)
 ======================= */
 const AZAN_TOLERANCE_MS = 1000; // wall-clock sensitive
-const PHASE_TOLERANCE_MS = 250; // relative timers
+const PHASE_TOLERANCE_MS = 500; // relative timers
 
 export const IQAMAH_IMAGE_DURATION = envNumber(
   import.meta.env.VITE_IQAMAH_IMAGE_DURATION,
@@ -81,6 +81,7 @@ export function useTimer(imageCount = 14) {
   const [phase, setPhase] = createSignal<Phase>("WAITING_AZAN");
   const [countdownSeconds, setCountdownSeconds] = createSignal<number>(0);
   const countdown = () => countdownSeconds();
+  let lastDisplayed: number | null = null;
   const [imageIndex, setImageIndex] = createSignal(0);
   const [effectiveIqamahDuration, setEffectiveIqamahDuration] = createSignal(
     getIqamahDuration("alasr"),
@@ -179,7 +180,23 @@ export function useTimer(imageCount = 14) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
 
-          setCountdownSeconds(EFFECTIVE_IQAMAH_DURATION / 1000);
+          // setCountdownSeconds(EFFECTIVE_IQAMAH_DURATION / 1000);
+
+          const realSeconds = Math.ceil(diff / 1000);
+
+          if (lastDisplayed === null) {
+            lastDisplayed = realSeconds;
+          } else {
+            // Only allow decrement by 1 (broadcast smooth)
+            if (realSeconds < lastDisplayed - 1) {
+              lastDisplayed = lastDisplayed - 1;
+            } else {
+              lastDisplayed = realSeconds;
+            }
+          }
+
+          setCountdownSeconds(lastDisplayed);
+
           setPhase("IQAMAH");
 
           displayEnd = null;
@@ -213,7 +230,21 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdownSeconds(Math.floor(diff / 1000));
+        // setCountdownSeconds(Math.ceil(diff / 1000));
+        const realSeconds = Math.ceil(diff / 1000);
+
+        if (lastDisplayed === null) {
+          lastDisplayed = realSeconds;
+        } else {
+          // Only allow decrement by 1 (broadcast smooth)
+          if (realSeconds < lastDisplayed - 1) {
+            lastDisplayed = lastDisplayed - 1;
+          } else {
+            lastDisplayed = realSeconds;
+          }
+        }
+
+        setCountdownSeconds(lastDisplayed);
         return;
       }
 
@@ -242,7 +273,21 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdownSeconds(Math.floor(remaining / 1000));
+        // setCountdownSeconds(Math.ceil(remaining / 1000));
+        const realSeconds = Math.ceil(diff / 1000);
+
+        if (lastDisplayed === null) {
+          lastDisplayed = realSeconds;
+        } else {
+          // Only allow decrement by 1 (broadcast smooth)
+          if (realSeconds < lastDisplayed - 1) {
+            lastDisplayed = lastDisplayed - 1;
+          } else {
+            lastDisplayed = realSeconds;
+          }
+        }
+
+        setCountdownSeconds(lastDisplayed);
 
         return;
       }
@@ -264,7 +309,22 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdownSeconds(Math.floor(remaining / 1000));
+        // setCountdownSeconds(Math.ceil(remaining / 1000));
+
+        const realSeconds = Math.ceil(diff / 1000);
+
+        if (lastDisplayed === null) {
+          lastDisplayed = realSeconds;
+        } else {
+          // Only allow decrement by 1 (broadcast smooth)
+          if (realSeconds < lastDisplayed - 1) {
+            lastDisplayed = lastDisplayed - 1;
+          } else {
+            lastDisplayed = realSeconds;
+          }
+        }
+
+        setCountdownSeconds(lastDisplayed);
 
         return;
       }
@@ -286,8 +346,21 @@ export function useTimer(imageCount = 14) {
           return;
         }
 
-        setCountdownSeconds(Math.floor(remaining / 1000));
+        // setCountdownSeconds(Math.ceil(remaining / 1000));
+        const realSeconds = Math.ceil(diff / 1000);
 
+        if (lastDisplayed === null) {
+          lastDisplayed = realSeconds;
+        } else {
+          // Only allow decrement by 1 (broadcast smooth)
+          if (realSeconds < lastDisplayed - 1) {
+            lastDisplayed = lastDisplayed - 1;
+          } else {
+            lastDisplayed = realSeconds;
+          }
+        }
+
+        setCountdownSeconds(lastDisplayed);
         return;
       }
     }
