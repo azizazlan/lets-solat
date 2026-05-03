@@ -81,7 +81,6 @@ export function useTimer(imageCount = 14) {
   const [phase, setPhase] = createSignal<Phase>("WAITING_AZAN");
   const [countdownSeconds, setCountdownSeconds] = createSignal<number>(0);
   const countdown = () => countdownSeconds();
-  let lastDisplayed: number | null = null;
   const [imageIndex, setImageIndex] = createSignal(0);
   const [effectiveIqamahDuration, setEffectiveIqamahDuration] = createSignal(
     getIqamahDuration("alasr"),
@@ -137,29 +136,16 @@ export function useTimer(imageCount = 14) {
   /* =======================
      TIMER LOOP
   ======================= */
-
-  // 🔥 helper (add above tick)
-  const getSmoothedSeconds = (realSeconds: number) => {
-    if (lastDisplayed === null) {
-      lastDisplayed = realSeconds;
-    } else if (realSeconds < lastDisplayed - 1) {
-      lastDisplayed = lastDisplayed - 1;
-    } else {
-      lastDisplayed = realSeconds;
-    }
-    return lastDisplayed;
-  };
-
   const tick = () => {
     const current = new Date();
     const nowMs = current.getTime();
 
     setNow(current);
 
-    const list = filteredPrayers();
+    const list = filteredPrayers(); // ✅ computed once
     if (!list.length) return;
 
-    const np = nextPrayer();
+    const np = nextPrayer(); // ✅ memoized
 
     let EFFECTIVE_IQAMAH_DURATION = getIqamahDuration("alasr");
 
@@ -178,52 +164,8 @@ export function useTimer(imageCount = 14) {
     setEffectiveIqamahDuration(EFFECTIVE_IQAMAH_DURATION);
 
     switch (phase()) {
-      /* =======================
-       DISPLAY PHASES (SPLIT!)
-    ======================= */
-
-      case "DISPLAY_POSTER": {
-        const nextPrayerTime = getNextPrayerTime(current, list);
-        if (!nextPrayerTime) return;
-
-        const diff = nextPrayerTime.getTime() - nowMs;
-
-        // 🔥 HARD RESET (KEY FEATURE)
-        lastDisplayed = null;
-
-        // Azan interrupt
-        if (diff <= AZAN_TOLERANCE_MS) {
-          iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
-          iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
-
-          setCountdownSeconds(EFFECTIVE_IQAMAH_DURATION / 1000);
-          setPhase("IQAMAH");
-
-          displayEnd = null;
-          displayIndex = 0;
-
-          playAlarm();
-          return;
-        }
-
-        if (!displayEnd) {
-          displayEnd = nowMs + PHASE_DURATIONS[phase()];
-        }
-
-        const remaining = displayEnd - nowMs;
-
-        if (remaining <= PHASE_TOLERANCE_MS) {
-          displayEnd = nowMs + PHASE_DURATIONS[phase()];
-          setPhase(nextDisplayPhase());
-          return;
-        }
-
-        // 🔥 RAW TRUTH (NO SMOOTHING)
-        setCountdownSeconds(Math.ceil(diff / 1000));
-        return;
-      }
-
       case "WAITING_AZAN":
+      case "DISPLAY_POSTER":
       case "DISPLAY_HADITHS":
       case "DISPLAY_APP_EVENTS":
       case "DISPLAY_PRAYER_TIMES": {
@@ -232,7 +174,7 @@ export function useTimer(imageCount = 14) {
 
         const diff = nextPrayerTime.getTime() - nowMs;
 
-        // Azan interrupt
+        // 🔥 Azan reached (interrupt ANY display phase)
         if (diff <= AZAN_TOLERANCE_MS) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
@@ -243,10 +185,13 @@ export function useTimer(imageCount = 14) {
           displayEnd = null;
           displayIndex = 0;
 
+          // 🔔 PLAY AZAN SOUND
           playAlarm();
+
           return;
         }
 
+        // ⏱ Initialize phase timer
         if (!displayEnd) {
           displayEnd = nowMs + PHASE_DURATIONS[phase()];
         }
@@ -254,32 +199,34 @@ export function useTimer(imageCount = 14) {
         const remaining = displayEnd - nowMs;
 
         if (remaining <= PHASE_TOLERANCE_MS) {
+          // console.log(`phase ${phase()} duration ${PHASE_DURATIONS[phase()]}`);
           displayEnd = nowMs + PHASE_DURATIONS[phase()];
 
           let next = nextDisplayPhase();
 
+          // ⛔ Skip DISPLAY_POSTER if close to azan
           if (next === "DISPLAY_POSTER" && shouldSkipPoster(diff)) {
-            next = nextDisplayPhase();
+            next = nextDisplayPhase(); // move to next again
           }
 
           setPhase(next);
           return;
         }
 
-        const realSeconds = Math.ceil(diff / 1000);
-        setCountdownSeconds(getSmoothedSeconds(realSeconds));
+        setCountdownSeconds(Math.ceil(diff / 1000));
         return;
       }
 
       /* =======================
-       IQAMAH
-    ======================= */
+         IQAMAH
+      ======================= */
       case "IQAMAH": {
         if (!iqamahEnd) {
           iqamahEnd = nowMs + EFFECTIVE_IQAMAH_DURATION;
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
         }
 
+        // rotate images
         if (iqamahImageEnd && nowMs >= iqamahImageEnd) {
           setImageIndex((i) => (i + 1) % imageCount);
           iqamahImageEnd = nowMs + IQAMAH_IMAGE_DURATION;
@@ -291,21 +238,18 @@ export function useTimer(imageCount = 14) {
           postIqamahEnd = nowMs + POST_IQAMAH_DURATION;
           iqamahEnd = null;
           iqamahImageEnd = null;
-
-          lastDisplayed = null; // reset on phase switch
-
           setPhase("POST_IQAMAH");
           return;
         }
 
-        const realSeconds = Math.ceil(remaining / 1000);
-        setCountdownSeconds(getSmoothedSeconds(realSeconds));
+        setCountdownSeconds(Math.ceil(remaining / 1000));
+
         return;
       }
 
       /* =======================
-       POST IQAMAH
-    ======================= */
+         POST IQAMAH
+      ======================= */
       case "POST_IQAMAH": {
         if (!postIqamahEnd) {
           postIqamahEnd = nowMs + POST_IQAMAH_DURATION;
@@ -316,21 +260,18 @@ export function useTimer(imageCount = 14) {
         if (remaining <= PHASE_TOLERANCE_MS) {
           blackoutEnd = nowMs + BLACKOUT_DURATION;
           postIqamahEnd = null;
-
-          lastDisplayed = null;
-
           setPhase("BLACKOUT");
           return;
         }
 
-        const realSeconds = Math.ceil(remaining / 1000);
-        setCountdownSeconds(getSmoothedSeconds(realSeconds));
+        setCountdownSeconds(Math.ceil(remaining / 1000));
+
         return;
       }
 
       /* =======================
-       BLACKOUT
-    ======================= */
+         BLACKOUT
+      ======================= */
       case "BLACKOUT": {
         if (!blackoutEnd) {
           blackoutEnd = nowMs + BLACKOUT_DURATION;
@@ -340,16 +281,13 @@ export function useTimer(imageCount = 14) {
 
         if (remaining <= PHASE_TOLERANCE_MS) {
           blackoutEnd = null;
-
-          lastDisplayed = null;
-
           setCountdownSeconds(0);
           setPhase("WAITING_AZAN");
           return;
         }
 
-        const realSeconds = Math.ceil(remaining / 1000);
-        setCountdownSeconds(getSmoothedSeconds(realSeconds));
+        setCountdownSeconds(Math.floor(remaining / 1000));
+
         return;
       }
     }
