@@ -28,8 +28,8 @@ const PHASE_DURATIONS: Record<Phase, number> = {
   WAITING_AZAN: 15000,
   DISPLAY_POSTER: 15000,
   DISPLAY_HADITHS: 15000,
-  DISPLAY_HADITHS_WIDE: 15000,
-  DISPLAY_APP_EVENTS: 15000,
+  DISPLAY_HADITHS_WIDE: 25000,
+  DISPLAY_APP_EVENTS: 17000,
   DISPLAY_PRAYER_TIMES: 15000,
   IQAMAH: 0,
   POST_IQAMAH: 0,
@@ -62,12 +62,12 @@ export const IQAMAH_IMAGE_DURATION = envNumber(
 
 export const POST_IQAMAH_DURATION = envNumber(
   import.meta.env.VITE_POST_IQAMAH_DURATION,
-  30000, // default fallback (ms)
+  60000, // default fallback (ms)
 );
 
 export const BLACKOUT_DURATION = envNumber(
   import.meta.env.VITE_BLACKOUT_DURATION,
-  300000, // default fallback (ms)
+  60000, // default fallback (ms)
 );
 
 export function envNumber(value: unknown, fallback: number): number {
