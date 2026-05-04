@@ -7,7 +7,7 @@ const STORAGE_KEY = "iqamah-settings";
 export const DEFAULT: AppSettings = {
   iqamah: {
     alfajr: 17,
-    dhuhr: 1,
+    dhuhr: 12,
     alasr: 10,
     maghrib: 10,
     alisha: 10,
@@ -17,7 +17,7 @@ export const DEFAULT: AppSettings = {
     imageUrl: "",
   },
   misc: {
-    leftPanelIntervalSecs: 5,
+    leftPanelIntervalSecs: 10,
   },
   appEvents: [],
 };
