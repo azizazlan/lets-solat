@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import type { AppEvent } from "@/types/app-event";
+import CopySpeakerCode from "@/components/settings/CopySpeakerCode";
 
 const formatDateMY = (dateStr: string) => {
   if (!dateStr) return "";
@@ -111,19 +112,18 @@ export default function AppEventsTab(props: {
   };
 
   return (
-    <div class="flex gap-6 w-full h-full text-black text-3xl">
+    <div class="flex gap-6 w-full h-full text-black text-4xl">
       {/* LEFT: FORM */}
       <div class="flex-1 flex flex-col gap-3 overflow-auto pr-2">
         <div class="flex items-center gap-2">
           <div class="border px-3 min-w-[40px] text-center">
             {getDayLabel(form().date)}
           </div>
-
           <input
             type="date"
             value={form().date}
             onInput={(e) => update("date", e.currentTarget.value)}
-            class="w-full h-10 px-3 border"
+            class="w-full h-10 px-3 py-2 border"
           />
         </div>
 
@@ -131,29 +131,42 @@ export default function AppEventsTab(props: {
           type="time"
           value={form().time}
           onInput={(e) => update("time", e.currentTarget.value)}
-          class="h-10 px-3 border"
+          class="h-10 px-3 py-2 border"
         />
 
-        <input
-          placeholder="Kuliah Maghrib"
-          value={form().title}
-          onInput={(e) => update("title", e.currentTarget.value)}
-          class="px-3 py-1 border"
-        />
+        <div class="flex flex-col gap-1">
+          <label class="text-green-900">Event title</label>
+          <input
+            placeholder="Kuliah Maghrib"
+            value={form().title}
+            onInput={(e) => update("title", e.currentTarget.value)}
+            class="px-3 py-2 border"
+          />
+        </div>
 
-        <input
-          placeholder="Speaker name"
-          value={form().speaker}
-          onInput={(e) => update("speaker", e.currentTarget.value)}
-          class="px-3 border"
-        />
+        <div class="flex flex-col gap-1">
+          <label class="text-green-900">Speaker name</label>
+          <input
+            placeholder="Speaker name"
+            value={form().speaker}
+            onInput={(e) => update("speaker", e.currentTarget.value)}
+            class="px-3 py-2 border"
+          />
+        </div>
 
-        <input
-          placeholder="Speaker code"
-          value={form().speakerCode}
-          onInput={(e) => update("speakerCode", e.currentTarget.value)}
-          class="px-3  border"
-        />
+        <div class="flex flex-col gap-1">
+          <label class="text-green-900">Photo</label>
+          <input
+            placeholder="Speaker code"
+            value={form().speakerCode}
+            onInput={(e) => update("speakerCode", e.currentTarget.value)}
+            class="px-3 py-2 border"
+          />
+          <CopySpeakerCode
+            value={form().speakerCode}
+            onChange={(code) => update("speakerCode", code)}
+          />
+        </div>
 
         <div class="flex flex-row justify-end w-full ">
           <button
