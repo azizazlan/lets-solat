@@ -6,7 +6,7 @@ const STORAGE_KEY = "iqamah-settings";
 
 export const DEFAULT: AppSettings = {
   iqamah: {
-    alfajr: 17,
+    alfajr: 18,
     dhuhr: 12,
     alasr: 10,
     maghrib: 10,
