@@ -112,7 +112,7 @@ export default function AppEventsTab(props: {
   };
 
   return (
-    <div class="flex gap-6 w-full h-full text-black text-4xl">
+    <div class="flex gap-6 w-full h-full text-black text-2xl">
       {/* LEFT: FORM */}
       <div class="flex-1 flex flex-col gap-3 overflow-auto pr-2">
         <div class="flex items-center gap-2">
@@ -123,7 +123,7 @@ export default function AppEventsTab(props: {
             type="date"
             value={form().date}
             onInput={(e) => update("date", e.currentTarget.value)}
-            class="w-full h-10 px-3 py-2 border"
+            class="w-full h-12 px-3 py-2 border"
           />
         </div>
 
@@ -131,7 +131,7 @@ export default function AppEventsTab(props: {
           type="time"
           value={form().time}
           onInput={(e) => update("time", e.currentTarget.value)}
-          class="h-10 px-3 py-2 border"
+          class="h-13 px-3 py-2 border"
         />
 
         <div class="flex flex-col gap-1">
