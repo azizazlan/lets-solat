@@ -6,11 +6,7 @@ type Hadith = {
   source?: string;
 };
 
-interface HadithsPanelProps {
-  wideMode?: boolean;
-}
-
-const HadithsPanel = (props: HadithsPanelProps) => {
+const HadithsPanel = () => {
   const [shownAt, setShownAt] = createSignal<number>(Date.now());
   const [hadith, setHadith] = createSignal<Hadith | null>(null);
 
@@ -69,7 +65,7 @@ const HadithsPanel = (props: HadithsPanelProps) => {
     clearInterval(interval);
   });
 
-  if (props.wideMode) {
+  {
     return (
       <div class="flex flex-col items-center justify-center gap-9 w-full h-full bg-[url('/logo2.png')] bg-repeat">
         <div class="w-full flex flex-col items-center">
@@ -88,21 +84,6 @@ const HadithsPanel = (props: HadithsPanelProps) => {
       </div>
     );
   }
-
-  return (
-    <div class="text-center bg-white h-full flex flex-col p-3">
-      <div class="mt-3 text-green-900 font-semibold text-7xl leading-relaxed">
-        {hadith()?.text || "Loading hadith..."}
-      </div>
-
-      <div class="font-semibold text-yellow-800 text-7xl mt-9">
-        {hadith()?.source ? `— ${hadith()?.source}` : ""}
-      </div>
-      <div class="w-full flex flex-col items-center mt-13">
-        <img src="/border.png" class="w-128" />
-      </div>
-    </div>
-  );
 };
 
 export default HadithsPanel;

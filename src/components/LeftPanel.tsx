@@ -2,7 +2,6 @@ import { Match, Switch, createEffect, createSignal, onCleanup } from "solid-js";
 import ClockDatePanel from "./ClockDatePanel";
 import PrayerList from "./PrayerList";
 import EventsPanel from "./EventsPanel";
-import HadithsPanel from "./HadithsPanel";
 import PostIqamahVideo from "./PostIqamahVideo";
 import type { Phase } from "@/services/timer";
 import { useSettings } from "@/services/settings";
@@ -45,14 +44,6 @@ export default function LeftPanel(props: LeftPanelProps) {
         <Match when={props.phase !== "POST_IQAMAH"}>
           <ClockDatePanel now={props.now} />
           <Switch>
-            <Match
-              when={
-                props.phase === "DISPLAY_HADITHS" ||
-                (props.phase === "IQAMAH" && !thereAreAppEvents())
-              }
-            >
-              <HadithsPanel />
-            </Match>
             <Match
               when={
                 (props.phase === "DISPLAY_APP_EVENTS" ||
