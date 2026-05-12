@@ -164,7 +164,10 @@ export default function AppEventsTab(props: {
           />
           <CopySpeakerCode
             value={form().speakerCode}
-            onChange={(code) => update("speakerCode", code)}
+            onChange={(speaker) => {
+              update("speakerCode", speaker.code);
+              update("speaker", speaker.name);
+            }}
           />
         </div>
 

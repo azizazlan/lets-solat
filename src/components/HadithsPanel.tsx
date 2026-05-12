@@ -79,7 +79,7 @@ const HadithsPanel = (props: HadithsPanelProps) => {
           {hadith()?.text || "Loading hadith..."}
         </div>
 
-        <div class="font-semibold text-yellow-600 text-7xl">
+        <div class="font-semibold text-yellow-500 text-7xl">
           {hadith()?.source ? `— ${hadith()?.source}` : ""}
         </div>
         <div class="w-full flex flex-col items-center">
