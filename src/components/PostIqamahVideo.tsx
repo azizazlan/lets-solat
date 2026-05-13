@@ -2,7 +2,15 @@ import { createSignal, onMount } from "solid-js";
 
 const STORAGE_KEY = "post-iqamah-video-index";
 
-const videos = ["/kaabah.mp4", "/kaabah2.mp4", "/kaabah3.mp4", "/kaabah4.mp4"];
+const videos = [
+  "/kaabah.mp4",
+  "/kaabah2.mp4",
+  "/kaabah3.mp4",
+  "/kaabah4.mp4",
+  "/kaabah5.mp4",
+  "/kaabah6.mp4",
+  "/kaabah7.mp4",
+];
 
 export default function PostIqamahVideo() {
   const [src, setSrc] = createSignal("");
