@@ -83,11 +83,11 @@ export default function EventsPanel() {
             </div>
 
             {/* Speaker image */}
-            <div class="w-[16vw] h-[24vw] mx-auto my-7">
+            <div class="w-[36vw] h-[30vw] mx-auto">
               <Show when={currentEvent()?.speakerCode} keyed>
                 {(code) => (
                   <img
-                    class="rounded-xl object-cover opacity-0 transition-opacity duration-500"
+                    class="mx-auto h-full rounded-xl object-cover opacity-0 transition-opacity duration-500"
                     src={`/data/speaker-imgs/${code}.png`}
                     alt={currentEvent()?.speaker}
                     onLoad={(e) =>
