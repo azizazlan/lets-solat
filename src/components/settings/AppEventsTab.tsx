@@ -111,6 +111,16 @@ export default function AppEventsTab(props: {
     props.onChange(updated);
   };
 
+  const clearAllAppEvents = () => {
+    const confirmed = confirm("Clear all events?");
+
+    if (!confirmed) return;
+
+    props.onChange([]);
+
+    cancelEdit();
+  };
+
   return (
     <div class="flex gap-6 w-full h-full text-black text-2xl">
       {/* LEFT: FORM */}
@@ -182,78 +192,93 @@ export default function AppEventsTab(props: {
       </div>
 
       {/* RIGHT: LIST */}
-      <div class="flex-1 min-w-[320px] overflow-auto border rounded-lg p-2">
-        {safeAppEvents().length === 0 && (
-          <div class="text-gray-400 text-center py-6">No events yet</div>
-        )}
+      <div class="flex-1 min-w-[320px] border rounded-lg p-2 flex flex-col">
+        {/* SCROLLABLE LIST */}
+        <div class="flex-1 overflow-auto">
+          {safeAppEvents().length === 0 && (
+            <div class="text-gray-400 text-center py-6">No events yet</div>
+          )}
 
-        {safeAppEvents().map((e, index) => {
-          return (
-            <div
-              onClick={() => editAppEvent(e)}
-              class={`flex items-center mt-2 p-3 rounded-md cursor-pointer gap-5
-        ${
-          editingId() === e.id
-            ? "bg-blue-50 border-2 border-blue-500"
-            : "bg-gray-50 border border-gray-300"
-        }`}
+          {safeAppEvents().map((e, index) => {
+            return (
+              <div
+                onClick={() => editAppEvent(e)}
+                class={`flex items-center mt-2 p-3 rounded-md cursor-pointer gap-5
+          ${
+            editingId() === e.id
+              ? "bg-blue-50 border-2 border-blue-500"
+              : "bg-gray-50 border border-gray-300"
+          }`}
+              >
+                {/* LEFT: index + date */}
+                <div class="flex items-center gap-3">
+                  <div class="p-3 min-w-[55px] flex justify-center rounded items-center text-3xl font-semibold bg-yellow-800 text-white">
+                    {index + 1}
+                  </div>
+
+                  <div class="text-3xl ">
+                    {getDayLabel(e.date)} • {formatDateMY(e.date)} {e.time}
+                  </div>
+                </div>
+
+                {/* TITLE */}
+                <div class="min-w-[650px] text-3xl text-green-900 ">
+                  {e.title}
+                </div>
+
+                {/* MIDDLE */}
+                <div class="flex items-center gap-3 flex-1">
+                  <img
+                    class="w-[2vw] object-cover"
+                    src={`/data/speaker-imgs/${e.speakerCode}.png`}
+                    alt={e.speaker}
+                  />
+
+                  {(e.speaker || e.speakerCode) && (
+                    <div class="text-3xl text-black">{e.speaker}</div>
+                  )}
+                </div>
+
+                {/* RIGHT ACTION BUTTON */}
+                <div class="flex items-center">
+                  {editingId() === e.id ? (
+                    <button
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        cancelEdit();
+                      }}
+                      class="border text-lg px-3 py-1 rounded bg-white"
+                    >
+                      Cancel
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        deleteAppEvent(e.id);
+                      }}
+                      class="cursor-pointer border rounded text-red-500 px-3 text-lg font-bold bg-white hover:bg-red-50"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* BOTTOM ACTIONS */}
+        {safeAppEvents().length > 0 && (
+          <div class="pt-3 border-t mt-3 flex justify-end">
+            <button
+              onClick={clearAllAppEvents}
+              class="cursor-pointer bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded text-xl font-semibold transition"
             >
-              {/* LEFT: index + date */}
-              <div class="flex items-center gap-3">
-                <div class="p-3 min-w-[55px] flex justify-center items-center text-3xl font-semibold bg-yellow-800 text-white">
-                  {index + 1}
-                </div>
-
-                <div class="text-3xl ">
-                  {getDayLabel(e.date)} • {formatDateMY(e.date)} {e.time}
-                </div>
-              </div>
-
-              {/* TITLE */}
-              <div class="min-w-[650px] text-3xl text-green-900 ">
-                {e.title}
-              </div>
-
-              {/* MIDDLE (grows and pushes button right) */}
-              <div class="flex items-center gap-3 flex-1">
-                <img
-                  class="w-[2vw] object-cover"
-                  src={`/data/speaker-imgs/${e.speakerCode}.png`}
-                  alt={e.speaker}
-                />
-
-                {(e.speaker || e.speakerCode) && (
-                  <div class="text-3xl text-black">{e.speaker}</div>
-                )}
-              </div>
-
-              {/* RIGHT ACTION BUTTON */}
-              <div class="flex items-center">
-                {editingId() === e.id ? (
-                  <button
-                    onClick={(ev) => {
-                      ev.stopPropagation();
-                      cancelEdit();
-                    }}
-                    class="border text-lg px-3 py-1 rounded"
-                  >
-                    Cancel
-                  </button>
-                ) : (
-                  <button
-                    onClick={(ev) => {
-                      ev.stopPropagation();
-                      deleteAppEvent(e.id);
-                    }}
-                    class="cursor-pointer text-red-500 px-2 text-xl font-bold"
-                  >
-                    ❌
-                  </button>
-                )}
-              </div>
-            </div>
-          );
-        })}
+              Clear all events
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
