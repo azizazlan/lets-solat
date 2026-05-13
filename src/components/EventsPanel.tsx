@@ -83,7 +83,7 @@ export default function EventsPanel() {
             </div>
 
             {/* Speaker image */}
-            <div class="w-[36vw] h-[30vw] mx-auto">
+            <div class="w-[32vw] h-[25vw] mx-auto">
               <Show when={currentEvent()?.speakerCode} keyed>
                 {(code) => (
                   <img
@@ -100,7 +100,7 @@ export default function EventsPanel() {
 
             {/* Speaker name */}
             <Show when={currentEvent()?.speaker}>
-              <div class="text-8xl font-semibold text-green-900">
+              <div class="text-7xl font-semibold text-green-900">
                 {currentEvent()?.speaker}
               </div>
             </Show>
