@@ -1,14 +1,6 @@
 import type { Accessor } from "solid-js";
 
-const DAY_NAMES = [
-  "Ahad",
-  "Isnin",
-  "Selasa",
-  "Rabu",
-  "Khamis",
-  "Jumaat",
-  "Sabtu",
-];
+const DAY_NAMES = ["Ahd", "Isn", "Sel", "Rab", "Kha", "Jum", "Sab"];
 const MONTH_NAMES = [
   "Jan",
   "Feb",
@@ -76,7 +68,7 @@ export default function ClockDatePanel(props: { now: Accessor<Date> }) {
     const adjusted = new Date(today());
     adjusted.setDate(adjusted.getDate() + OFFSET);
 
-    const formatter = new Intl.DateTimeFormat("en-TN-u-ca-islamic-tbla", {
+    const formatter = new Intl.DateTimeFormat("ar-TN-u-ca-islamic-tbla", {
       month: "long",
     });
 
@@ -89,9 +81,12 @@ export default function ClockDatePanel(props: { now: Accessor<Date> }) {
     const adjusted = new Date(today());
     adjusted.setDate(adjusted.getDate() + OFFSET);
 
-    const formatter = new Intl.DateTimeFormat("en-TN-u-ca-islamic-tbla", {
-      year: "numeric",
-    });
+    const formatter = new Intl.DateTimeFormat(
+      "ar-TN-u-ca-islamic-tbla-nu-arab",
+      {
+        year: "numeric",
+      },
+    );
 
     return formatter.format(adjusted);
   };
@@ -125,7 +120,7 @@ export default function ClockDatePanel(props: { now: Accessor<Date> }) {
           </div>
 
           <div class="text-[4vh] font-bold">
-            {hijriMonth()},{hijriYear()}
+            {hijriMonth()} {hijriYear()}
           </div>
         </div>
       </div>

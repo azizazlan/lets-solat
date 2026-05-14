@@ -20,14 +20,14 @@ export default function PrayerHorizList(props: Props) {
   const isActive = (p: Prayer) => activePrayer()?.en === p.en;
 
   return (
-    <div class="flex flex-row justify-between w-full p-12">
+    <div class="flex flex-row justify-between w-full">
       {/* Prayer list */}
       <For each={props.filteredPrayers?.() || []}>
         {(p) => {
           const active = createMemo(() => isActive(p));
 
           return (
-            <div class="text-center">
+            <div class="text-center p-7">
               <div>
                 <div
                   class={`mb-5 font-[Cairo] text-white ${active() ? "font-bold opacity-100 text-7xl" : "font-semibold opacity-30 text-7xl"}`}
@@ -41,7 +41,7 @@ export default function PrayerHorizList(props: Props) {
                 </div>
               </div>
               <div
-                class={`flex flex-col text-white uppercase ${active() ? "text-7xl font-bold opacity-100" : "text-7xl font-semibold opacity-30"}`}
+                class={`flex flex-col text-white uppercase ${active() ? "text-8xl font-bold opacity-100" : "text-7xl font-semibold opacity-30"}`}
               >
                 <div>{p.time}</div>
               </div>
