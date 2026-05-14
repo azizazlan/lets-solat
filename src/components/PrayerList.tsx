@@ -51,7 +51,7 @@ export default function PrayerList(props: PrayerListProps) {
           <div class="text-7xl flex flex-col items-center">
             <div class="font-black text-green-900">الشروق</div>
             <div class="text-7xl font-semibold text-green-900">Sunrise</div>
-            <div class="text-9xl font-semibold text-orange-800">
+            <div class="text-9xl font-semibold text-yellow-700">
               {formatTime(syuruk())}
             </div>
           </div>

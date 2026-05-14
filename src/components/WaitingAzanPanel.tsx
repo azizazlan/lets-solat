@@ -37,7 +37,6 @@ export default function WaitingAzanPanel(props: {
           {countdownText()}
         </div>
       </div>
-
       <PrayerHorizList
         filteredPrayers={props.filteredPrayers}
         nextPrayer={props.nextPrayer}

@@ -63,8 +63,10 @@ export default function SettingsModal(props: Props) {
       <div class="w-full h-full bg-white flex flex-col p-4">
         {/* Header */}
         <div class="flex justify-between items-center mb-3">
-          <h2 class="text-black text-lg font-semibold">Settings</h2>
-          <button onClick={props.onClose}>✕</button>
+          <h2 class="text-black text-5xl font-semibold">Settings</h2>
+          <button class="text-5xl" onClick={props.onClose}>
+            ✕
+          </button>
         </div>
         <Tabs value={tab()} onChange={setTab} />
 

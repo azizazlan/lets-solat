@@ -50,7 +50,7 @@ export default function EventsPanel() {
   };
 
   return (
-    <div class="h-full w-full bg-white flex justify-center">
+    <div class="relative h-full w-full bg-white flex justify-center">
       {/* Loading */}
       <Show
         when={!loading}
@@ -107,6 +107,16 @@ export default function EventsPanel() {
           </div>
         </Show>
       </Show>
+      <img
+        src="/border-corner-bottom-left.png"
+        alt=""
+        class="absolute bottom-0 left-0 w-[220px] pointer-events-none select-none"
+      />
+      <img
+        src="/border-corner-bottom-right.png"
+        alt=""
+        class="absolute bottom-0 right-0 w-[220px] pointer-events-none select-none"
+      />
     </div>
   );
 }
