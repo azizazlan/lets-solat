@@ -22,7 +22,7 @@ export default function EventsPanel() {
       if (d.today.length > 0 && d.tomorrow.length > 0) {
         setMode((prev) => (prev === "today" ? "tomorrow" : "today"));
       }
-    }, 7000);
+    }, 10000);
 
     onCleanup(() => clearInterval(interval));
   });
