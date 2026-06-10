@@ -16,6 +16,8 @@ const speakers = [
   { code: "syakir", name: "YBhg Ustaz Syakir" },
   { code: "wan", name: "YBhg Ustaz Wan Muhammad Abd Halim" },
   { code: "zakaria", name: "YBhg Ustaz Zakaria" },
+  { code: "muhdafiq", name: "YBhg Ustaz Muhammad Afiq" },
+  { code: "muhdafiqeman", name: "YBhg Ustaz Muhammad Afiq Eman" },
 ];
 
 export default function CopySpeakerCode(props: {
