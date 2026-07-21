@@ -100,7 +100,7 @@ export default function EventsPanel() {
 
             {/* Speaker name */}
             <Show when={currentEvent()?.speaker}>
-              <div class="text-7xl font-semibold text-green-900">
+              <div class="text-9xl font-semibold text-green-900">
                 {currentEvent()?.speaker}
               </div>
             </Show>
@@ -110,12 +110,12 @@ export default function EventsPanel() {
       <img
         src="/border-corner-bottom-left.png"
         alt=""
-        class="absolute bottom-0 left-0 w-[220px] pointer-events-none select-none"
+        class="absolute bottom-0 left-0 w-[450px] pointer-events-none select-none"
       />
       <img
         src="/border-corner-bottom-right.png"
         alt=""
-        class="absolute bottom-0 right-0 w-[220px] pointer-events-none select-none"
+        class="absolute bottom-0 right-0 w-[450px] pointer-events-none select-none"
       />
     </div>
   );

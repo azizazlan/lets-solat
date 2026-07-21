@@ -15,15 +15,10 @@ export type PosterSettings = {
   imageUrl: string | null;
 };
 
-export type MiscSettings = {
-  leftPanelIntervvalSecs: number;
-};
-
 export type AppSettings = {
   iqamah: IqamahSettings;
   poster: PosterSettings;
-  misc: MiscSettings;
   appEvents: AppEvent[];
 };
 
-export type TabKey = "iqamah" | "events" | "poster" | "prayer-times" | "misc";
+export type TabKey = "iqamah" | "events" | "poster" | "prayer-times";

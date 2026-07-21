@@ -3,7 +3,6 @@ import Tabs from "./Tabs";
 import IqamahTab from "./IqamahTab";
 import AppEventsTab from "./AppEventsTab";
 import PosterTab from "./PosterTab";
-import MiscTab from "./MiscTab";
 import PrayerTimesTab from "./PrayerTimesTab";
 import type { AppSettings, TabKey } from "@/types/settings";
 import { DEFAULT } from "@/services/settings";
@@ -27,11 +26,6 @@ export default function SettingsModal(props: Props) {
       imageUrl: "/poster/default.jpg",
     },
   );
-  const [misc, setMisc] = createSignal(
-    props.initialValues?.misc ?? {
-      leftPanelIntervalSecs: 15,
-    },
-  );
   const [appEvents, setAppEvents] = createSignal<AppEvent[]>(
     props.initialValues?.appEvents ?? [],
   );
@@ -40,7 +34,6 @@ export default function SettingsModal(props: Props) {
     if (props.initialValues) {
       setIqamah(props.initialValues.iqamah);
       setPoster(props.initialValues.poster ?? null);
-      setMisc(props.initialValues.misc ?? null);
       setAppEvents(props.initialValues.appEvents ?? []);
     }
   });
@@ -49,7 +42,6 @@ export default function SettingsModal(props: Props) {
     props.onSave({
       iqamah: iqamah(),
       poster: poster(),
-      misc: misc(),
       appEvents: appEvents(),
     });
 
@@ -84,8 +76,6 @@ export default function SettingsModal(props: Props) {
           {tab() === "events" && (
             <AppEventsTab appEvents={appEvents()} onChange={setAppEvents} />
           )}
-
-          {tab() === "misc" && <MiscTab values={misc()} onChange={setMisc} />}
         </div>
         {/* Footer */}
         <div class="flex justify-end gap-3 border-t pt-4 mt-4">
