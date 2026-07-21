@@ -16,9 +16,6 @@ export const DEFAULT: AppSettings = {
     isEnabled: false,
     imageUrl: "",
   },
-  misc: {
-    leftPanelIntervalSecs: 10,
-  },
   appEvents: [],
 };
 
@@ -39,10 +36,6 @@ function loadSettings(): AppSettings {
         poster: {
           ...DEFAULT.poster,
           ...(parsed.poster || {}),
-        },
-        misc: {
-          ...DEFAULT.misc,
-          ...(parsed.misc || {}),
         },
         appEvents: parsed.appEvents || [],
       };

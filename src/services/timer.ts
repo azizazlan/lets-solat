@@ -3,6 +3,7 @@ import type { Prayer } from "@/types/prayers";
 import { timeToDate } from "@/utils/time";
 import { playAlarm } from "@/utils/notification"; // adjust path
 import { getIqamahDuration, isPosterEnabled } from "@/services/settings";
+import { envNumber } from "@/utils/common";
 
 export type Phase =
   | "WAITING_AZAN"
@@ -66,11 +67,6 @@ export const BLACKOUT_DURATION = envNumber(
   import.meta.env.VITE_BLACKOUT_DURATION,
   60000, // default fallback (ms)
 );
-
-export function envNumber(value: unknown, fallback: number): number {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : fallback;
-}
 
 export function useTimer(imageCount = 14) {
   /* =======================
@@ -208,8 +204,6 @@ export function useTimer(imageCount = 14) {
 
           let next = nextDisplayPhase();
           let guard = 0;
-
-          const shouldSkipPoster = (diffMs: number) => diffMs <= 3 * 60 * 1000;
 
           const shouldSkipWideHadiths = (diffMs: number) =>
             diffMs <= 3 * 60 * 1000;
