@@ -21,10 +21,7 @@ export default function SettingsModal(props: Props) {
     props.initialValues?.iqamah ?? { ...DEFAULT.iqamah },
   );
   const [poster, setPoster] = createSignal(
-    props.initialValues?.poster ?? {
-      isEnabled: false,
-      imageUrl: "/poster/default.jpg",
-    },
+    props.initialValues?.poster ?? DEFAULT.poster,
   );
   const [appEvents, setAppEvents] = createSignal<AppEvent[]>(
     props.initialValues?.appEvents ?? [],

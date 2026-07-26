@@ -1,11 +1,6 @@
 import type { PosterSettings } from "@/types/settings";
 
-const DEFAULT_VALUES: PosterSettings = {
-  poster: {
-    isEnabled: true,
-    imageUrl: null,
-  },
-};
+const MAX_POSTERS = 3;
 
 export default function PosterTab(props: {
   value: PosterSettings;
@@ -24,15 +19,23 @@ export default function PosterTab(props: {
 
     const reader = new FileReader();
     reader.onload = () => {
-      update({ imageUrl: reader.result as string });
+      const current = props.value.imageUrls ?? [];
+      const updated = [...current, reader.result as string].slice(0, MAX_POSTERS);
+      update({ imageUrls: updated });
     };
     reader.readAsDataURL(file);
+
+    (e.target as HTMLInputElement).value = "";
+  };
+
+  const handleRemove = (index: number) => {
+    const current = props.value.imageUrls ?? [];
+    update({ imageUrls: current.filter((_, i) => i !== index) });
   };
 
   const toggleRow = (label: string, key: keyof PosterSettings) => (
     <div>
       <span class="text-3xl text-black">{label}</span>
-      {/* Kiosk-friendly toggle */}
       <button
         onClick={() =>
           update({ [key]: !props.value[key] } as Partial<PosterSettings>)
@@ -56,23 +59,41 @@ export default function PosterTab(props: {
           <div>{toggleRow("", "isEnabled")}</div>
         </div>
 
-        <div class="flex flex-col items-start gap-2 mt-7">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFile}
-            class="text-3xl text-black mt-[0vh] border cursor-pointer"
-          />
-
-          {props.value.imageUrl && (
-            <img
-              src={props.value.imageUrl}
-              class={`w-auto h-[12vh] border border-black ${
-                props.value.isEnabled ? "" : "grayscale opacity-50"
-              }`}
-            />
-          )}
+        <div class="text-3xl text-black mt-6">
+          Posters ({(props.value.imageUrls ?? []).length}/{MAX_POSTERS})
         </div>
+
+        <div class="flex flex-row flex-wrap gap-4 mt-4">
+          {(props.value.imageUrls ?? []).map((url, i) => (
+            <div class="relative inline-block">
+              <img
+                src={url}
+                class={`w-auto h-[24vh] border border-black ${
+                  props.value.isEnabled ? "" : "grayscale opacity-50"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => handleRemove(i)}
+                class="absolute top-0 right-0 w-10 h-10 bg-red-600 text-white text-2xl rounded-bl-lg flex items-center justify-center cursor-pointer border-none z-10"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {(props.value.imageUrls ?? []).length < MAX_POSTERS && (
+          <div class="mt-4">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFile}
+              class="text-3xl text-black mt-[0vh] border cursor-pointer"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
