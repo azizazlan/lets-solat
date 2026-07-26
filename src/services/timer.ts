@@ -23,12 +23,7 @@ const DISPLAY_PHASES: Phase[] = [
   "DISPLAY_PRAYER_TIMES",
 ];
 
-export const POSTER_PER_DURATION = 25_000;
-
 function getPhaseDuration(phase: Phase): number {
-  if (phase === "DISPLAY_POSTER") {
-    return getPosterCount() * POSTER_PER_DURATION;
-  }
   const base: Record<Phase, number> = {
     WAITING_AZAN: 15000,
     DISPLAY_POSTER: 25000,
@@ -49,6 +44,7 @@ export const BETWEEN_DURATION = envNumber(
 );
 let displayEnd: number | null = null;
 let displayIndex = 0;
+let posterCycleIndex = 0;
 
 const nextDisplayPhase = () => {
   displayIndex = (displayIndex + 1) % DISPLAY_PHASES.length;
@@ -191,6 +187,7 @@ export function useTimer(imageCount = 14) {
 
           displayEnd = null;
           displayIndex = 0;
+          posterCycleIndex = 0;
 
           playAlarm();
           return;
@@ -204,16 +201,6 @@ export function useTimer(imageCount = 14) {
         }
 
         const remaining = displayEnd - nowMs;
-
-        if (phase() === "DISPLAY_POSTER") {
-          const total = getPhaseDuration("DISPLAY_POSTER");
-          const elapsed = total - remaining;
-          const idx = Math.min(
-            Math.floor(elapsed / POSTER_PER_DURATION),
-            getPosterCount() - 1,
-          );
-          setPosterIndex(Math.max(0, idx));
-        }
 
         /* =======================
          PHASE TRANSITION
@@ -241,6 +228,11 @@ export function useTimer(imageCount = 14) {
             if (guard > DISPLAY_PHASES.length) break;
           }
 
+          if (next === "DISPLAY_POSTER") {
+            const count = getPosterCount();
+            setPosterIndex(posterCycleIndex % count);
+            posterCycleIndex = (posterCycleIndex + 1) % Math.max(count, 1);
+          }
           displayEnd = nowMs + getPhaseDuration(next);
           setPhase(next);
           return;
@@ -370,6 +362,7 @@ export function useTimer(imageCount = 14) {
 
     displayEnd = null;
     displayIndex = 0;
+    posterCycleIndex = 0;
 
     setImageIndex(0);
     setCountdownSeconds(0);
