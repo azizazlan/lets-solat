@@ -12,7 +12,7 @@ export type IqamahSettings = {
 
 export type PosterSettings = {
   isEnabled: boolean;
-  imageUrl: string | null;
+  imageUrls: string[];
 };
 
 export type AppSettings = {

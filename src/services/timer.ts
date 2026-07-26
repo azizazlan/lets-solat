@@ -2,7 +2,7 @@ import { createSignal, createMemo } from "solid-js";
 import type { Prayer } from "@/types/prayers";
 import { timeToDate } from "@/utils/time";
 import { playAlarm } from "@/utils/notification"; // adjust path
-import { getIqamahDuration, isPosterEnabled } from "@/services/settings";
+import { getIqamahDuration, isPosterEnabled, getPosterCount } from "@/services/settings";
 import { envNumber } from "@/utils/common";
 
 export type Phase =
@@ -23,16 +23,24 @@ const DISPLAY_PHASES: Phase[] = [
   "DISPLAY_PRAYER_TIMES",
 ];
 
-const PHASE_DURATIONS: Record<Phase, number> = {
-  WAITING_AZAN: 15000,
-  DISPLAY_POSTER: 25000,
-  DISPLAY_HADITHS: 25000,
-  DISPLAY_APP_EVENTS: 10000,
-  DISPLAY_PRAYER_TIMES: 15000,
-  IQAMAH: 0,
-  POST_IQAMAH: 0,
-  BLACKOUT: 0,
-};
+export const POSTER_PER_DURATION = 25_000;
+
+function getPhaseDuration(phase: Phase): number {
+  if (phase === "DISPLAY_POSTER") {
+    return getPosterCount() * POSTER_PER_DURATION;
+  }
+  const base: Record<Phase, number> = {
+    WAITING_AZAN: 15000,
+    DISPLAY_POSTER: 25000,
+    DISPLAY_HADITHS: 25000,
+    DISPLAY_APP_EVENTS: 10000,
+    DISPLAY_PRAYER_TIMES: 15000,
+    IQAMAH: 0,
+    POST_IQAMAH: 0,
+    BLACKOUT: 0,
+  };
+  return base[phase];
+}
 
 // 10 seconds oscillates between WAITING_AZAN and BETWEEN_WAITING_AZAN
 export const BETWEEN_DURATION = envNumber(
@@ -78,6 +86,7 @@ export function useTimer(imageCount = 14) {
   const [countdownSeconds, setCountdownSeconds] = createSignal<number>(0);
   const countdown = () => countdownSeconds();
   const [imageIndex, setImageIndex] = createSignal(0);
+  const [posterIndex, setPosterIndex] = createSignal(0);
   const [effectiveIqamahDuration, setEffectiveIqamahDuration] = createSignal(
     getIqamahDuration("alasr"),
   );
@@ -191,17 +200,25 @@ export function useTimer(imageCount = 14) {
          PHASE TIMER INIT
       ======================= */
         if (!displayEnd) {
-          displayEnd = nowMs + PHASE_DURATIONS[phase()];
+          displayEnd = nowMs + getPhaseDuration(phase());
         }
 
         const remaining = displayEnd - nowMs;
+
+        if (phase() === "DISPLAY_POSTER") {
+          const total = getPhaseDuration("DISPLAY_POSTER");
+          const elapsed = total - remaining;
+          const idx = Math.min(
+            Math.floor(elapsed / POSTER_PER_DURATION),
+            getPosterCount() - 1,
+          );
+          setPosterIndex(Math.max(0, idx));
+        }
 
         /* =======================
          PHASE TRANSITION
       ======================= */
         if (remaining <= PHASE_TOLERANCE_MS) {
-          displayEnd = nowMs + PHASE_DURATIONS[phase()];
-
           let next = nextDisplayPhase();
           let guard = 0;
 
@@ -224,6 +241,7 @@ export function useTimer(imageCount = 14) {
             if (guard > DISPLAY_PHASES.length) break;
           }
 
+          displayEnd = nowMs + getPhaseDuration(next);
           setPhase(next);
           return;
         }
@@ -364,8 +382,9 @@ export function useTimer(imageCount = 14) {
     prayers,
     setPrayers,
     phase,
-    countdownSeconds, // NUMBER only   countdownSeconds,
+    countdownSeconds,
     imageIndex,
+    posterIndex,
     filteredPrayers,
     nextPrayer,
     lastPrayer,

@@ -50,12 +50,7 @@ const App: Component = () => {
     timer.startTimer();
   });
 
-  const posterImgPath = () => {
-    const s = settings();
-    return s.poster?.imageUrl;
-  };
-
-  const imgPoster = createMemo(() => posterImgPath());
+  const posterImageUrls = () => settings().poster?.imageUrls ?? [];
 
   const handleOpenModal = () => {
     setOpenSettings(true);
@@ -79,8 +74,11 @@ const App: Component = () => {
         <Match when={timer.phase() === "DISPLAY_HADITHS"}>
           <HadithsPanel />
         </Match>
-        <Match when={imgPoster() && timer.phase() === "DISPLAY_POSTER"}>
-          <PosterPanel imageUrl={imgPoster()} />
+        <Match when={timer.phase() === "DISPLAY_POSTER"}>
+          <PosterPanel
+            imageUrls={posterImageUrls()}
+            currentIndex={timer.posterIndex()}
+          />
         </Match>
         <Match when={timer.phase() !== "BLACKOUT"}>
           <LeftPanel

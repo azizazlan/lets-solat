@@ -14,7 +14,7 @@ export const DEFAULT: AppSettings = {
   },
   poster: {
     isEnabled: false,
-    imageUrl: "",
+    imageUrls: [],
   },
   appEvents: [],
 };
@@ -33,10 +33,20 @@ function loadSettings(): AppSettings {
           ...DEFAULT.iqamah,
           ...(parsed.iqamah || {}),
         },
-        poster: {
-          ...DEFAULT.poster,
-          ...(parsed.poster || {}),
-        },
+        poster: (() => {
+          const p = parsed.poster || {};
+          const imageUrls = p.imageUrls ?? (
+            p.imageUrl
+              ? [p.imageUrl]
+              : [...DEFAULT.poster.imageUrls]
+          );
+          return {
+            ...DEFAULT.poster,
+            ...p,
+            imageUrls,
+            imageUrl: undefined,
+          };
+        })(),
         appEvents: parsed.appEvents || [],
       };
     } catch {}
@@ -67,4 +77,14 @@ export function getIqamahDurationInMins(prayer: keyof IqamahSettings) {
 
 export function isPosterEnabled() {
   return settings().poster.isEnabled;
+}
+
+export function getPosterCount() {
+  const urls = settings().poster.imageUrls;
+  if (!urls.length) return 1;
+  return urls.length;
+}
+
+export function getPosterImageUrls() {
+  return settings().poster.imageUrls;
 }
