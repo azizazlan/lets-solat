@@ -46,7 +46,7 @@ const App: Component = () => {
       console.warn("No prayers found for today");
       return;
     }
-    timer.setPrayers(todayPrayers);
+    timer.setPrayersWithDate(todayPrayers);
     timer.startTimer();
   });
 

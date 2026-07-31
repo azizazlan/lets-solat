@@ -4,6 +4,7 @@ import { timeToDate } from "@/utils/time";
 import { playAlarm } from "@/utils/notification"; // adjust path
 import { getIqamahDuration, isPosterEnabled, getPosterCount } from "@/services/settings";
 import { envNumber } from "@/utils/common";
+import { loadTodayPrayers } from "@/services/prayers";
 
 export type Phase =
   | "WAITING_AZAN"
@@ -87,6 +88,9 @@ export function useTimer(imageCount = 14) {
     getIqamahDuration("alasr"),
   );
 
+  let lastLoadedDate: string | null = null;
+  const getTodayString = () => new Date().toLocaleDateString("en-GB");
+
   /* Phase end markers */
   let iqamahEnd: number | null = null;
   let postIqamahEnd: number | null = null;
@@ -139,6 +143,18 @@ export function useTimer(imageCount = 14) {
     const nowMs = current.getTime();
 
     setNow(current);
+
+    /* Reload prayers if the date has changed (midnight rollover) */
+    const todayStr = getTodayString();
+    if (lastLoadedDate !== todayStr) {
+      lastLoadedDate = todayStr;
+      loadTodayPrayers().then((newPrayers) => {
+        if (newPrayers) {
+          setPrayers(newPrayers);
+          resetTimer();
+        }
+      });
+    }
 
     const list = filteredPrayers();
     if (!list.length) return;
@@ -370,10 +386,15 @@ export function useTimer(imageCount = 14) {
     setPhase("WAITING_AZAN");
   };
 
+  const setPrayersWithDate = (p: Prayer[]) => {
+    lastLoadedDate = getTodayString();
+    setPrayers(p);
+  };
+
   return {
     now,
     prayers,
-    setPrayers,
+    setPrayersWithDate,
     phase,
     countdownSeconds,
     imageIndex,
