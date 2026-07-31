@@ -384,6 +384,7 @@ export function useTimer(imageCount = 14) {
     setCountdownSeconds(0);
 
     setPhase("WAITING_AZAN");
+    scheduleNextTick();
   };
 
   const setPrayersWithDate = (p: Prayer[]) => {
