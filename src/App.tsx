@@ -18,7 +18,7 @@ import BlackoutPanel from "@/components/BlackoutPanel";
 import PosterPanel from "@/components/PosterPanel";
 import SettingsModal from "@/components/settings/SettingsModal";
 import SettingsPanel from "@/components/SettingsPanel";
-import HadithsPanel from "@/components/HadithsPanel";
+
 
 const App: Component = () => {
   const [openSettings, setOpenSettings] = createSignal<boolean>(false);
@@ -70,9 +70,6 @@ const App: Component = () => {
       <Switch>
         <Match when={timer.phase() === "BLACKOUT"}>
           <BlackoutPanel />
-        </Match>
-        <Match when={timer.phase() === "DISPLAY_HADITHS"}>
-          <HadithsPanel />
         </Match>
         <Match when={timer.phase() === "DISPLAY_POSTER"}>
           <PosterPanel
