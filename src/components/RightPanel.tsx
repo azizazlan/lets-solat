@@ -33,7 +33,6 @@ export default function RightPanel(props: {
             props.phase === "WAITING_AZAN" ||
             props.phase === "DISPLAY_PRAYER_TIMES" ||
             props.phase === "DISPLAY_APP_EVENTS" ||
-            props.phase === "DISPLAY_HADITHS" ||
             !isPosterEnabled()
           }
         >

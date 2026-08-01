@@ -9,7 +9,6 @@ import { loadTodayPrayers } from "@/services/prayers";
 export type Phase =
   | "WAITING_AZAN"
   | "DISPLAY_POSTER"
-  | "DISPLAY_HADITHS"
   | "DISPLAY_APP_EVENTS"
   | "DISPLAY_PRAYER_TIMES"
   | "IQAMAH"
@@ -19,7 +18,6 @@ export type Phase =
 const DISPLAY_PHASES: Phase[] = [
   "WAITING_AZAN",
   "DISPLAY_POSTER",
-  "DISPLAY_HADITHS",
   "DISPLAY_APP_EVENTS",
   "DISPLAY_PRAYER_TIMES",
 ];
@@ -28,7 +26,6 @@ function getPhaseDuration(phase: Phase): number {
   const base: Record<Phase, number> = {
     WAITING_AZAN: 15000,
     DISPLAY_POSTER: 25000,
-    DISPLAY_HADITHS: 25000,
     DISPLAY_APP_EVENTS: 10000,
     DISPLAY_PRAYER_TIMES: 15000,
     IQAMAH: 0,
@@ -183,7 +180,6 @@ export function useTimer(imageCount = 14) {
     ======================= */
       case "WAITING_AZAN":
       case "DISPLAY_POSTER":
-      case "DISPLAY_HADITHS":
       case "DISPLAY_APP_EVENTS":
       case "DISPLAY_PRAYER_TIMES": {
         const nextPrayerTime = getNextPrayerTime(current, list);
@@ -225,18 +221,12 @@ export function useTimer(imageCount = 14) {
           let next = nextDisplayPhase();
           let guard = 0;
 
-          const shouldSkipWideHadiths = (diffMs: number) =>
-            diffMs <= 3 * 60 * 1000;
-
           while (true) {
             const skipPoster =
               next === "DISPLAY_POSTER" &&
               (shouldSkipPoster(diff) || !isPosterEnabled());
 
-            const skipWide =
-              next === "DISPLAY_HADITHS" && shouldSkipWideHadiths(diff);
-
-            if (!skipPoster && !skipWide) break;
+            if (!skipPoster) break;
 
             next = nextDisplayPhase();
             guard++;
