@@ -232,6 +232,10 @@ export default function AppEventsTab(props: {
                     class="w-[2vw] object-cover"
                     src={`/data/speaker-imgs/${e.speakerCode}.png`}
                     alt={e.speaker}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2c0 .66.54 1.2 1.2 1.2h16.8c.66 0 1.2-.54 1.2-1.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z'/%3E%3C/svg%3E";
+                    }}
                   />
 
                   {(e.speaker || e.speakerCode) && (

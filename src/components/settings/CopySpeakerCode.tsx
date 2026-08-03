@@ -12,6 +12,7 @@ const speakers = [
   { code: "muzaffar", name: "YBhg Ustaz Muzaffar" },
   { code: "mutawali", name: "YBhg Ustaz Mutawali" },
   { code: "nadzmi", name: "YBhg. Ustaz Nadzmi" },
+  { code: "nor-hanisah", name: "YBhg Ustazah Nor Hanisah Muhamad" },
   { code: "nazrin", name: "YBhg Ustaz Nazrin" },
   { code: "syakir", name: "YBhg Ustaz Syakir" },
   { code: "wan", name: "YBhg Ustaz Wan Muhammad Abd Halim" },
