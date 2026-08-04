@@ -26,7 +26,7 @@ function getPhaseDuration(phase: Phase): number {
   const base: Record<Phase, number> = {
     WAITING_AZAN: 15000,
     DISPLAY_POSTER: 25000,
-    DISPLAY_APP_EVENTS: 10000,
+    DISPLAY_APP_EVENTS: 20000,
     DISPLAY_PRAYER_TIMES: 15000,
     IQAMAH: 0,
     POST_IQAMAH: 0,
