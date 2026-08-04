@@ -111,16 +111,6 @@ export default function EventsPanel() {
           </div>
         </Show>
       </Show>
-      <img
-        src="/border-corner-bottom-left.png"
-        alt=""
-        class="absolute bottom-0 left-0 w-[450px] pointer-events-none select-none"
-      />
-      <img
-        src="/border-corner-bottom-right.png"
-        alt=""
-        class="absolute bottom-0 right-0 w-[450px] pointer-events-none select-none"
-      />
     </div>
   );
 }
