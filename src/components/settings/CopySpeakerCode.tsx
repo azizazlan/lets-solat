@@ -4,7 +4,7 @@ const speakers = [
   { code: "asyari", name: "YBhg Ustaz Asyari" },
   { code: "asyraf", name: "YBhg Ustaz Asyraf" },
   { code: "azmi", name: "YBhg Ustaz Haji Azmi bin Sabdin" },
-  { code: "azri", name: "YBhg Ustaz Azri" },
+  { code: "azri", name: "YBhg Ustaz Azri Zulhilmi bin Zakaria" },
   { code: "hazwan", name: "YBhg Ustaz Hazwan" },
   { code: "ikhwan", name: "YBhg Ustaz Ikhwan" },
   { code: "liswan", name: "YBhg Ustaz Liswan" },
