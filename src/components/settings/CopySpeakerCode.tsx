@@ -3,6 +3,7 @@ import { For } from "solid-js";
 const speakers = [
   { code: "asyari", name: "YBhg Ustaz Asyari" },
   { code: "asyraf", name: "YBhg Ustaz Asyraf" },
+  { code: "amir", name: "YBhg Ustaz Amir" },
   { code: "azmi", name: "YBhg Ustaz Haji Azmi bin Sabdin" },
   { code: "azri", name: "YBhg Ustaz Azri Zulhilmi bin Zakaria" },
   { code: "hazwan", name: "YBhg Ustaz Hazwan" },
@@ -17,7 +18,7 @@ const speakers = [
   { code: "syakir", name: "YBhg Ustaz Syakir" },
   { code: "wan", name: "YBhg Ustaz Wan Muhammad Abd Halim" },
   { code: "zakaria", name: "YBhg Ustaz Zakaria" },
-  { code: "muhdafiq", name: "YBhg Ustaz Muhammad Afiq" },
+  { code: "muhdafiq", name: "YBhg Ustaz Muhammad Afiq Abd Aziz" },
   { code: "muhdafiqeman", name: "YBhg Ustaz Muhammad Afiq Eman" },
 ];
 
