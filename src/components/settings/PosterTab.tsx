@@ -1,6 +1,6 @@
 import type { PosterSettings } from "@/types/settings";
 
-const MAX_POSTERS = 3;
+const MAX_POSTERS = 7;
 
 export default function PosterTab(props: {
   value: PosterSettings;
@@ -20,7 +20,10 @@ export default function PosterTab(props: {
     const reader = new FileReader();
     reader.onload = () => {
       const current = props.value.imageUrls ?? [];
-      const updated = [...current, reader.result as string].slice(0, MAX_POSTERS);
+      const updated = [...current, reader.result as string].slice(
+        0,
+        MAX_POSTERS,
+      );
       update({ imageUrls: updated });
     };
     reader.readAsDataURL(file);
