@@ -1,6 +1,6 @@
 export default function PostIqamahPanel() {
   return (
-    <div class="h-full flex flex-col justify-center items-center text-center leading-relaxed">
+    <div class="w-full h-full bg-[url('/logo2.png')] bg-repeat flex flex-col justify-center items-center text-center leading-relaxed">
       {/* Main Arabic text */}
       <div class="text-9xl text-white leading-relaxed">
         سَوُّوا صُفُوفَكُمْ، فَإِنَّ تَسْوِيَةَ الصُّفُوفِ مِنْ إِقَامَةِ

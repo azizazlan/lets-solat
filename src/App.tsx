@@ -4,6 +4,7 @@ import {
   createSignal,
   onMount,
   onCleanup,
+  Show,
   Switch,
   Match,
 } from "solid-js";
@@ -15,6 +16,7 @@ import { timeToDate } from "@/utils/time";
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import BlackoutPanel from "@/components/BlackoutPanel";
+import PostIqamahPanel from "@/components/PostIqamahPanel";
 import PosterPanel from "@/components/PosterPanel";
 import SettingsModal from "@/components/settings/SettingsModal";
 import SettingsPanel from "@/components/SettingsPanel";
@@ -61,7 +63,6 @@ const App: Component = () => {
       <SettingsPanel handleOpenModal={handleOpenModal} />
       <Show when={openSettings()}>
         <SettingsModal
-          open={openSettings()}
           initialValues={useSettings()}
           onClose={() => setOpenSettings(false)}
           onSave={(values) => saveSettings(values)}
@@ -77,7 +78,14 @@ const App: Component = () => {
             currentIndex={timer.posterIndex()}
           />
         </Match>
-        <Match when={timer.phase() !== "BLACKOUT"}>
+        <Match when={timer.phase() === "POST_IQAMAH"}>
+          <PostIqamahPanel />
+        </Match>
+        <Match
+          when={
+            timer.phase() !== "BLACKOUT" && timer.phase() !== "POST_IQAMAH"
+          }
+        >
           <LeftPanel
             phase={timer.phase()}
             now={timer.now}

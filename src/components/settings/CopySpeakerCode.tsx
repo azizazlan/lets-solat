@@ -23,7 +23,7 @@ const speakers = [
 ];
 
 export default function CopySpeakerCode(props: {
-  value: string;
+  value?: string;
   onChange: (speaker: { code: string; name: string }) => void;
 }) {
   return (

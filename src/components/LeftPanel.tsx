@@ -1,8 +1,8 @@
-import { Match, Switch, createEffect, createSignal, onCleanup } from "solid-js";
+import { Match, Switch } from "solid-js";
 import ClockDatePanel from "./ClockDatePanel";
 import PrayerList from "./PrayerList";
 import EventsPanel from "./EventsPanel";
-import PostIqamahVideo from "./PostIqamahVideo";
+import type { Prayer } from "@/types/prayers";
 import type { Phase } from "@/services/timer";
 import { useSettings } from "@/services/settings";
 
@@ -37,37 +37,30 @@ export default function LeftPanel(props: LeftPanelProps) {
 
   return (
     <div class="w-full h-full flex flex-col">
+      <ClockDatePanel now={props.now} />
       <Switch>
-        <Match when={props.phase === "POST_IQAMAH"}>
-          <PostIqamahVideo />
+        <Match
+          when={
+            (props.phase === "DISPLAY_APP_EVENTS" ||
+              props.phase === "IQAMAH") &&
+            thereAreAppEvents()
+          }
+        >
+          <EventsPanel />
         </Match>
-        <Match when={props.phase !== "POST_IQAMAH"}>
-          <ClockDatePanel now={props.now} />
-          <Switch>
-            <Match
-              when={
-                (props.phase === "DISPLAY_APP_EVENTS" ||
-                  props.phase === "IQAMAH") &&
-                thereAreAppEvents()
-              }
-            >
-              <EventsPanel />
-            </Match>
-            <Match
-              when={
-                props.phase === "WAITING_AZAN" ||
-                props.phase === "DISPLAY_PRAYER_TIMES" ||
-                !thereAreAppEvents()
-              }
-            >
-              <PrayerList
-                filteredPrayers={props.filteredPrayers}
-                nextPrayer={props.nextPrayer}
-                duhaDate={props.duhaDate}
-                syurukDate={props.syurukDate}
-              />
-            </Match>
-          </Switch>
+        <Match
+          when={
+            props.phase === "WAITING_AZAN" ||
+            props.phase === "DISPLAY_PRAYER_TIMES" ||
+            !thereAreAppEvents()
+          }
+        >
+          <PrayerList
+            filteredPrayers={props.filteredPrayers}
+            nextPrayer={props.nextPrayer}
+            duhaDate={props.duhaDate}
+            syurukDate={props.syurukDate}
+          />
         </Match>
       </Switch>
     </div>

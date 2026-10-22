@@ -8,7 +8,7 @@ import {
 import { loadTodayAndTomorrow } from "@/services/app-events";
 
 export default function EventsPanel() {
-  const [data, { loading }] = createResource(loadTodayAndTomorrow);
+  const [data] = createResource(loadTodayAndTomorrow);
 
   const [mode, setMode] = createSignal<"today" | "tomorrow">("today");
 
@@ -43,7 +43,9 @@ export default function EventsPanel() {
     return d.today[0] ?? d.tomorrow[0];
   };
 
-  const getDayName = (dateStr) => {
+  const getDayName = (dateStr?: string) => {
+    if (!dateStr) return "";
+
     return new Date(dateStr).toLocaleDateString("ms-MY", {
       weekday: "long",
     });
@@ -53,7 +55,7 @@ export default function EventsPanel() {
     <div class="relative h-full w-full bg-white flex justify-center">
       {/* Loading */}
       <Show
-        when={!loading}
+        when={!data.loading}
         fallback={
           <div class="text-black text-5xl text-center p-4">Loading...</div>
         }

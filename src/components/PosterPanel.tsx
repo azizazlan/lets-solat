@@ -6,9 +6,9 @@ type PosterPanelProps = {
 export default function PosterPanel(props: PosterPanelProps) {
   const url = () => {
     const urls = props.imageUrls;
-    if (!urls.length) return null;
+    if (!urls.length) return undefined;
     const i = props.currentIndex % urls.length;
-    return urls[i] || null;
+    return urls[i] || undefined;
   };
 
   if (!url()) {

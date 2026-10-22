@@ -1,5 +1,6 @@
 import { createMemo } from "solid-js";
 import PrayerHorizList from "@/components/PrayerHorizList";
+import type { Prayer } from "@/types/prayers";
 
 export default function WaitingAzanPanel(props: {
   prayer?: Prayer;

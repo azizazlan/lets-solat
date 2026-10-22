@@ -1,11 +1,11 @@
 import type { IqamahSettings } from "@/types/settings";
-import { DEFAULT as DEFAULT_VALUES } from "@/services/settings";
+import { DEFAULT } from "@/services/settings";
 
 export default function IqamahTab(props: {
   values?: IqamahSettings;
   onChange: (v: IqamahSettings) => void;
 }) {
-  const safeValues = () => props.values ?? DEFAULT_VALUES;
+  const safeValues = () => props.values ?? DEFAULT.iqamah;
 
   const update = (key: keyof IqamahSettings, value: number) => {
     const clamped = Math.max(1, Math.min(20, value));
