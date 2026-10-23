@@ -8,13 +8,13 @@ export default function PostIqamahPanel() {
       </div>
 
       {/* Translation */}
-      <div class="mt-[4.5vh] text-[min(5vw,9vh)] text-white leading-[1.3]">
+      <div class="mt-[3.7vh] text-[min(5vw,9vh)] text-white leading-[1.3]">
         Luruskanlah saf-saf kamu kerana meluruskan saf itu termasuk di dalam
         mendirikan solat
       </div>
 
       {/* Source */}
-      <div class="mt-[3.5vh] text-[min(3.2vw,5.6vh)] text-yellow-300 tracking-wide">
+      <div class="mt-[2.5vh] text-[min(3.2vw,5.6vh)] text-yellow-300 tracking-wide">
         Riwayat al-Bukhari (723)
       </div>
     </div>

@@ -20,6 +20,8 @@ import PostIqamahPanel from "@/components/PostIqamahPanel";
 import PosterPanel from "@/components/PosterPanel";
 import SettingsModal from "@/components/settings/SettingsModal";
 import SettingsPanel from "@/components/SettingsPanel";
+import EnableSoundModal from "@/components/EnableSoundModal";
+import { isNotificationEnabled } from "@/utils/notification";
 
 
 const App: Component = () => {
@@ -61,6 +63,9 @@ const App: Component = () => {
   return (
     <div class="flex flex-row w-full h-full transition-opacity duration-300">
       <SettingsPanel handleOpenModal={handleOpenModal} />
+      <Show when={!isNotificationEnabled()}>
+        <EnableSoundModal />
+      </Show>
       <Show when={openSettings()}>
         <SettingsModal
           initialValues={useSettings()}
