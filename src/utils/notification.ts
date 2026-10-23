@@ -10,8 +10,15 @@ export function isNotificationEnabled() {
 }
 
 export async function toggleNotification() {
-  await unlockAudio();
-  setIsNotification((p) => !p);
+  if (isNotification()) {
+    setIsNotification(false);
+    return;
+  }
+
+  const unlocked = await unlockAudio();
+  if (unlocked) {
+    setIsNotification(true);
+  }
 }
 
 export function isAudioUnlocked() {

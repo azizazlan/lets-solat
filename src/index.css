@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
+
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 12px rgba(249, 115, 22, 0.55);
+    }
+    50% {
+      box-shadow: 0 0 34px rgba(249, 115, 22, 0.95);
+    }
+  }
+}
+
 html,
 body,
 #root {
